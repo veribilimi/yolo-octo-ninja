@@ -24,7 +24,7 @@ class PostsActor(token: String) extends Actor {
 
     case GetPost(id)       => sender ! posts.find(_.getSid == id)
 
-    case SyncFacebookPosts => Future(posts = importFacebookPosts() sortBy rankPosts)
+    case SyncFacebookPosts => Future(posts = importFacebookPosts sortBy rankPosts)
   }
 
   override def preStart() = {

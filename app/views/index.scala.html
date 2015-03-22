@@ -22,9 +22,9 @@
                         <td>
                             <table border="0" cellpadding="0" cellspacing="0">
                                 <tbody>
-                                    @for(post <- posts) {
+                                    @for((post,index) <- posts.zipWithIndex) {
                                         <tr>
-                                            <td align="right" valign="top" class="title"><span class="rank">1.</span></td>
+                                            <td align="right" valign="top" class="title"><span class="rank">@{1+index}.</span></td>
                                             <td><center><a id="up_9245980" onclick="return vote(this)" href="https://news.ycombinator.com/vote?for=9245980&dir=up&auth=a03b13651e68cb49ad4d0b48d24162d9b6be113a&goto=news"><div class="votearrow" title="upvote"></div></a><span id="down_9245980"></span></center></td>
                                             <td class="title"><span class="deadmark"></span><a href="@routes.Application.post(post.getSid)">@post.getMessage.take(100)</a><span class="sitebit comhead"> (hsmr.cc)</span></td>
                                         </tr>
@@ -34,12 +34,7 @@
                                         </tr>
                                         <tr style="height:5px"></tr>
                                     }
-                                    
-                                    <tr>
-                                        <td align="right" valign="top" class="title"><span class="rank">2.</span></td>
-                                        <td><center><a id="up_9246958" onclick="return vote(this)" href="https://news.ycombinator.com/vote?for=9246958&dir=up&auth=7dba440fdf795ad9f81ac49c44b618bce4ba5236&goto=news"><div class="votearrow" title="upvote"></div></a><span id="down_9246958"></span></center></td>
-                                        <td class="title"><span class="deadmark"></span><a href="http://techcrunch.com/2015/03/22/mentors-are-the-secret-weapons-of-successful-startups/">Mentors Are the Secret Weapons of Successful Startups</a><span class="sitebit comhead"> (techcrunch.com)</span></td>
-                                    </tr>
+
                                     <tr style="height:5px"></tr>
                                     <tr style="height:10px"></tr>
                                     <tr><td colspan="2"></td><td class="title"><a href="https://news.ycombinator.com/news?p=2" rel="nofollow">More</a></td></tr>
