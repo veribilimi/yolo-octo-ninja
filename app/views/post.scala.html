@@ -1,0 +1,34 @@
+@(post: String, postId: Long)
+@main("Post yolo-octo-ninja") {
+
+    <p>Post page hellooo</p>
+
+    <p>
+
+        <b>postid </b>: @postId <br/>
+
+        <b>post </b>: @post <br/>
+
+    </p>
+
+    <pre>
+        PostRankingService rankingService = new PostRankingService();
+        rankingService.init("CAAE4r0cMaAoBAIP6OxZA5xX3CZADqn78e7F8zd3Rc5IbnkdtZBy9yVdF4Cqqj7lsZBRFHaYbBOTRCko0xxrQo5MwnkeTJJOXClhuTZAnLpRc5PVSiLsWg7ScQj4eKICrZBbdJ900ZB9IpVvJLs32ZB9yhElWCQzdpfS20dDaGfR97SrjC8wVQMDjxuEreYZBAj4nhNAL0XB6U9DF8fjlbwjEQCp9ZBnNj0egsZD");
+        List<Post> posts = rankingService.getPosts();
+        for (Post post : posts) {
+        System.out.println("**POST**");
+        System.out.println("Sender: " + post.getFrom().getName());
+        System.out.println("Date: " + post.getCreatedTime());
+        System.out.println("Likes: " + post.getLikes());
+        System.out.println(post.getMessage().substring(0, post.getMessage().length() > 100 ? 100 : post.getMessage().length()));
+        System.out.println("***COMMENTS***");
+        for (Comment comment : post.getComments()) {
+        System.out.println("\tSender: " + comment.getFrom());
+        System.out.println("\tDate: " + comment.getCreatedTime());
+        System.out.println("\tLike count: " + comment.getLikeCount());
+        System.out.println("\tMessage: " + comment.getMessage().substring(0, comment.getMessage().length() > 100 ? 100 : comment.getMessage().length()));
+        }
+        }
+
+    </pre>
+}

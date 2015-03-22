@@ -1,0 +1,11 @@
+@(posts: List[Long])
+@main("index yolo-octo-ninja") {
+
+    <p>Index page hellooo</p>
+
+    @for(post <- posts) {
+        <a href="@routes.Application.post(post)"> Goto post with id @post</a>
+        <br/>
+    }
+
+}
