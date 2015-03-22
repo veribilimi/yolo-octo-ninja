@@ -7,7 +7,11 @@ import postranker.domain.Post
 import scala.collection.JavaConversions._
 
 object Application extends Controller {
-  lazy val posts: List[Post] = rankingService.getPosts.toList
+
+
+  val rankPosts: (Post) => Int = p => -(p.getComments.size + p.getLikes.size)
+
+  lazy val posts: List[Post] = rankingService.getPosts.toList.sortBy(rankPosts)
 
   def index = Action { request =>
     Ok(views.html.index(posts))
@@ -26,7 +30,7 @@ object Application extends Controller {
   }
 
 
-  val token = "CAAE4r0cMaAoBAHqj61PYpuTZBLUBKoMsYUucwgZAkQTYqzZCMnx1YTEkVLlkbIbZBX9Nxd3lZB2RJVFUlWrF25tFQhecg1mtOZCyb345MfHYaOcpwK9r03Sletc0IRL3XQAP1OTqToUOb0ZAKvRxA2a0OxqkyCNegwzuZBLgexc1Gbf7arNCh9hwrqrTpGos5GYfZCFZBZAXikZC3YZAUoF6RHwtwUFSnZBRG63ZBUZD"
+  val token = "CAAE4r0cMaAoBANO8YOeLDm5OHQWXimP56jhqawisYRAHcU6OsYZCZBUMfcvePv6FbdhQYMpdlHuxDoJlPLk8ctdmBWz7asHzZAzx7SUJJmH77PXZABHgQTrrqN5SCsI6WaABikq03wF43SyJZAJwtLKqomdpFe3h55bUT0n3QpblAxPZC4fZB0zsTY6LoqEsYjMATCXBRZAgvNPFjZBfu1GXElvcAbZCYXfX6sHC3jPfyhAgZDZD"
   val rankingService: PostRankingService = new PostRankingService()
   rankingService.init(token)
 

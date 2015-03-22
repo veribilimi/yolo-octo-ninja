@@ -6,7 +6,11 @@
 
     @for(post <- posts) {
         <li>
-            <a href="@routes.Application.post(post.getSid)">@post.getMessage</a> <br/> <br/>
+            <a href="@routes.Application.post(post.getSid)">@post.getMessage.take(100)</a>
+            @post.getMessage.drop(100) |
+            (@post.getFrom.getName) |
+            <b>rank: </b>@(post.getComments.size + post.getLikes.size) |
+            @post.getCreatedTime <br/> <br/>
         </li>
     }
     </ul>
