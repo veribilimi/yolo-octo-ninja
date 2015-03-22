@@ -7,7 +7,7 @@
                 <td><center><a id="up_9247851" onclick="return vote(this)" href="javascript:void()"><div class="votearrow" title="upvote"></div></a><span id="down_9247851"></span></center></td>
                 <td class="title"><span class="deadmark"></span><a href="javascript:void()">@post.getMessage.take(100)</a><span class="sitebit comhead"> (quantombone.blogspot.com)</span></td>
             </tr>
-            <tr><td colspan="1"></td><td class="subtext"><span class="score" id="score_9247851">@(post.getComments.size + post.getLikes.size) points</span> by <a href="user?id=user">@(post.getFrom.getName)</a> <a href="javascript:void()">2 hours ago</a>  | <a href="javascript:void()">@(post.getComments.size) comments</a></td></tr>
+            <tr><td colspan="1"></td><td class="subtext"><span class="score" id="score_9247851">@(post.getComments.size + post.getLikes.size) points</span> by <a href="@routes.Application.user(post.getFrom.getName)">@(post.getFrom.getName)</a> <a href="javascript:void()">2 hours ago</a>  | <a href="javascript:void()">@(post.getComments.size) comments</a></td></tr>
             <tr style="height:10px"></tr>
             <!--tr>
                 <td></td>
@@ -37,7 +37,7 @@
                                 <td><img src="@routes.Assets.at("s.gif")" height="1" width="0"></td>
                                 <td valign="top"><center><a id="up_9247963" onclick="return vote(this)" href="javascript:void()"><div class="votearrow" title="upvote"></div></a><span id="down_9247963"></span></center></td>
                                 <td class="default">
-                                    <div style="margin-top:2px; margin-bottom:-10px; "><span class="comhead"><a href="user?id=user">@comment.getFrom</a> <a href="javascript:void()">1 hour ago</a> <span class="deadmark"></span></span></div>
+                                    <div style="margin-top:2px; margin-bottom:-10px; "><span class="comhead"><a href="@routes.Application.user(post.getFrom.getName)">@comment.getFrom</a> <a href="javascript:void()">@controllers.Utils.prettyTime.format(comment.getCreatedTime)</a> <span class="deadmark"></span></span></div>
                                     <br>
                                     <span class="comment"><font color="#000000">@comment.getMessage</font></span>
                                     <p><font size="1"><u><a href="javascript:void()">reply</a></u></font></p>
