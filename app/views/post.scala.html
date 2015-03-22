@@ -20,7 +20,7 @@
 
     @for(comment <- post.getComments.toList) {
         <li>
-            <span><b>FROM:</b> @comment.getFrom</span> <br/>
+            <span><b>FROM:</b> @comment.getFrom</span> | <small>likes: <b>@comment.getLikeCount</b></small> <br/>
             <span>@comment.getMessage</span> <br/> <br/>
         </li>
     }

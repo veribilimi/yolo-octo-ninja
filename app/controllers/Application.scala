@@ -1,38 +1,42 @@
 package controllers
 
 
+import actors.PostsActor
+import actors.PostsActor.api.{GetPost, Get24hPosts}
 import play.api.mvc._
-import postranker.PostRankingService
 import postranker.domain.Post
-import scala.collection.JavaConversions._
+import akka.pattern.ask
+import scala.concurrent.duration._
+import scala.concurrent.ExecutionContext.Implicits.global
+import akka.util.Timeout
 
 object Application extends Controller {
+  implicit val defaultTimeout = Timeout(5 seconds)
+  lazy val postsActor = PostsActor()
 
 
-  val rankPosts: (Post) => Int = p => -(p.getComments.size + p.getLikes.size)
+  def index = Action.async {
 
-  lazy val posts: List[Post] = rankingService.getPosts.toList.sortBy(rankPosts)
-
-  def index = Action { request =>
-    Ok(views.html.index(posts))
-  }
-
-
-  def post(id: String) = Action { request =>
-    posts.find(_.getSid == id).map { post =>
-
-      Ok(views.html.post(post))
-
-    }.getOrElse {
-
-      NotFound
+    (postsActor ? Get24hPosts).mapTo[List[Post]] map { posts =>
+      Ok(views.html.index(posts))
     }
+
   }
 
 
-  val token = "CAAE4r0cMaAoBANO8YOeLDm5OHQWXimP56jhqawisYRAHcU6OsYZCZBUMfcvePv6FbdhQYMpdlHuxDoJlPLk8ctdmBWz7asHzZAzx7SUJJmH77PXZABHgQTrrqN5SCsI6WaABikq03wF43SyJZAJwtLKqomdpFe3h55bUT0n3QpblAxPZC4fZB0zsTY6LoqEsYjMATCXBRZAgvNPFjZBfu1GXElvcAbZCYXfX6sHC3jPfyhAgZDZD"
-  val rankingService: PostRankingService = new PostRankingService()
-  rankingService.init(token)
+  def post(id: String) = Action.async {
+    (postsActor ? GetPost(id)).mapTo[Option[Post]] map {
+      _.map { post =>
+
+        Ok(views.html.post(post))
+
+      }.getOrElse {
+
+        NotFound
+      }
+    }
+
+  }
 
 
 }
