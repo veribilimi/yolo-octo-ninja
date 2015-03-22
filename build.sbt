@@ -3,7 +3,7 @@ import com.typesafe.sbt.web.SbtWeb
 import play.PlayImport._
 import play.PlayScala
 
-name := """Yollo-Octo-Ninja"""
+name := """Yolo-Octo-Ninja"""
 
 version := "1.0-SNAPSHOT"
 
@@ -22,7 +22,7 @@ libraryDependencies ++= Seq(
 
 
 
-PlayKeys.playDefaultPort := 9000
+PlayKeys.playDefaultPort := 10000
 
 
 scalacOptions in ThisBuild ++= Seq(
@@ -32,11 +32,3 @@ scalacOptions in ThisBuild ++= Seq(
   "-feature", // warning and location for usages of features that should be imported explicitly
   "-language:postfixOps"
 )
-
-
-//libraryDependencies ++= Seq(
-//  "org.webjars" % "bootstrap" % "3.3.2" exclude("org.webjars", "jquery"),
-//  "org.webjars" % "jquery" % "2.1.1"
-//  "org.webjars" % "lodash" % "2.4.1-6"
-//)
-
