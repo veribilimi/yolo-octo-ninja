@@ -1,4 +1,3 @@
-import com.typesafe.sbt.gzip.Import.gzip
 import com.typesafe.sbt.web.SbtWeb
 import play.PlayImport._
 import play.PlayScala
