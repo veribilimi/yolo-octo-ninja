@@ -2,6 +2,7 @@ package controllers
 
 import java.util.UUID.randomUUID
 import play.api.mvc._
+import postranker.PostRankingService
 
 object Application extends Controller {
 
@@ -25,6 +26,10 @@ object Application extends Controller {
 
     Ok(views.html.post(postDesc, id))
   }
+
+
+
+  val rankingService:PostRankingService = new PostRankingService()
 
 
 }

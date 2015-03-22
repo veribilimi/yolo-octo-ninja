@@ -14,7 +14,7 @@
     <pre>
         PostRankingService rankingService = new PostRankingService();
         rankingService.init("CAAE4r0cMaAoBAIP6OxZA5xX3CZADqn78e7F8zd3Rc5IbnkdtZBy9yVdF4Cqqj7lsZBRFHaYbBOTRCko0xxrQo5MwnkeTJJOXClhuTZAnLpRc5PVSiLsWg7ScQj4eKICrZBbdJ900ZB9IpVvJLs32ZB9yhElWCQzdpfS20dDaGfR97SrjC8wVQMDjxuEreYZBAj4nhNAL0XB6U9DF8fjlbwjEQCp9ZBnNj0egsZD");
-        List<Post> posts = rankingService.getPosts();
+        List [Post] posts = rankingService.getPosts();
         for (Post post : posts) {
         System.out.println("**POST**");
         System.out.println("Sender: " + post.getFrom().getName());

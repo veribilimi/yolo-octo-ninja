@@ -15,14 +15,15 @@ libraryDependencies ++= Seq(
   filters,
   cache,
   ws,
-  "org.webjars" % "jquery" % "2.1.1"
+  "org.webjars" % "jquery" % "2.1.1",
+  "org.springframework.social" % "spring-social-facebook" % "1.1.1.RELEASE"
 )
 
 PlayKeys.playDefaultPort := 9000
 
 
 scalacOptions in ThisBuild ++= Seq(
-  "-target:jvm-1.7",  // todo upgrade to 1.8
+  "-target:jvm-1.8",  // todo upgrade to 1.8
   "-encoding", "UTF-8",
   "-deprecation", // warning and location for usages of deprecated APIs
   "-feature", // warning and location for usages of features that should be imported explicitly
