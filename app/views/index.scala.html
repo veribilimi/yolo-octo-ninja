@@ -1,11 +1,14 @@
-@(posts: List[Long])
+@(posts: List[postranker.domain.Post])
 @main("index yolo-octo-ninja") {
 
     <p>Index page hellooo</p>
+    <ul>
 
     @for(post <- posts) {
-        <a href="@routes.Application.post(post)"> Goto post with id @post</a>
-        <br/>
+        <li>
+            <a href="@routes.Application.post(post.getSid)">@post.getMessage</a> <br/> <br/>
+        </li>
     }
+    </ul>
 
 }

@@ -1,34 +1,28 @@
-@(post: String, postId: Long)
+@(post: postranker.domain.Post)
 @main("Post yolo-octo-ninja") {
 
-    <p>Post page hellooo</p>
-
+    <h1>Post page (@post.getFrom.getName) (@post.getSid)</h1>
+    <p>@post.getMessage</p>
+    <hr/>
     <p>
 
-        <b>postid </b>: @postId <br/>
+        <b>postid </b>: @post.getSid <br/>
 
-        <b>post </b>: @post <br/>
+        <b>likes</b>: @post.getLikes <br/>
+        <b>who</b>: @post.getFrom.getName<br/>
+        <b>date</b>: @post.getCreatedTime<br/>
+        <b>message</b>: <br/>
 
     </p>
+    <hr/>
+    <h2>Comments</h2>
+    <ul>
 
-    <pre>
-        PostRankingService rankingService = new PostRankingService();
-        rankingService.init("CAAE4r0cMaAoBAIP6OxZA5xX3CZADqn78e7F8zd3Rc5IbnkdtZBy9yVdF4Cqqj7lsZBRFHaYbBOTRCko0xxrQo5MwnkeTJJOXClhuTZAnLpRc5PVSiLsWg7ScQj4eKICrZBbdJ900ZB9IpVvJLs32ZB9yhElWCQzdpfS20dDaGfR97SrjC8wVQMDjxuEreYZBAj4nhNAL0XB6U9DF8fjlbwjEQCp9ZBnNj0egsZD");
-        List [Post] posts = rankingService.getPosts();
-        for (Post post : posts) {
-        System.out.println("**POST**");
-        System.out.println("Sender: " + post.getFrom().getName());
-        System.out.println("Date: " + post.getCreatedTime());
-        System.out.println("Likes: " + post.getLikes());
-        System.out.println(post.getMessage().substring(0, post.getMessage().length() > 100 ? 100 : post.getMessage().length()));
-        System.out.println("***COMMENTS***");
-        for (Comment comment : post.getComments()) {
-        System.out.println("\tSender: " + comment.getFrom());
-        System.out.println("\tDate: " + comment.getCreatedTime());
-        System.out.println("\tLike count: " + comment.getLikeCount());
-        System.out.println("\tMessage: " + comment.getMessage().substring(0, comment.getMessage().length() > 100 ? 100 : comment.getMessage().length()));
-        }
-        }
-
-    </pre>
+    @for(comment <- post.getComments.toList) {
+        <li>
+            <span><b>FROM:</b> @comment.getFrom</span> <br/>
+            <span>@comment.getMessage</span> <br/> <br/>
+        </li>
+    }
+    </ul>
 }
