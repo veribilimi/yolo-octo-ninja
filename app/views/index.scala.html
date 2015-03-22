@@ -11,7 +11,12 @@
                 </tr>
                 <tr>
                     <td colspan="2"></td>
-                    <td class="subtext"><span class="score" id="score_9245980">@(post.getComments.size + post.getLikes.size) points</span> by <a href="@routes.Application.post(post.getSid)"><font color="#3c963c">@post.getFrom.getName</font></a> <a href="@routes.Application.post(post.getSid)">@post.getCreatedTime</a>  | <a href="@routes.Application.post(post.getSid)">@(post.getComments.size) comments @(post.getLikes.size) likes</a></td>
+                    <td class="subtext">
+                        <span class="score" id="score_9245980">@(post.getComments.size + post.getLikes.size) points</span>
+                        by <a href="@routes.Application.user(post.getFrom.getName)"><font color="#3c963c">@post.getFrom.getName</font></a>
+                        <a href="@routes.Application.post(post.getSid)">@(controllers.Utils.prettyTime.format(post.getCreatedTime))</a>  |
+                        <a href="@routes.Application.post(post.getSid)">@(post.getComments.size) comments @(post.getLikes.size) likes</a>
+                    </td>
                 </tr>
                 <tr style="height:5px"></tr>
             }

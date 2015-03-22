@@ -8,6 +8,10 @@ version := "1.0-SNAPSHOT"
 
 lazy val root = (project in file(".")).enablePlugins(PlayScala,SbtWeb)
 
+resolvers ++= Seq(
+  Resolver.url("Sonatype Snapshots",url("http://oss.sonatype.org/content/repositories/snapshots/"))(Resolver.ivyStylePatterns)
+)
+
 scalaVersion := "2.11.4"
 
 libraryDependencies ++= Seq(
@@ -16,8 +20,10 @@ libraryDependencies ++= Seq(
   ws,
   "org.webjars" % "jquery" % "2.1.1",
   "org.springframework.social" % "spring-social-facebook" % "1.1.1.RELEASE",
-  "org.apache.httpcomponents" % "httpclient" % "4.3.1"
+  "org.apache.httpcomponents" % "httpclient" % "4.3.1",
+  "org.ocpsoft.prettytime" % "prettytime" % "3.2.5.Final"
 )
+
 
 
 
