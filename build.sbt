@@ -18,7 +18,7 @@ libraryDependencies ++= Seq(
   "org.webjars" % "jquery" % "2.1.1"
 )
 
-PlayKeys.playDefaultPort := 9000
+PlayKeys.playDefaultPort := 10000
 
 
 scalacOptions in ThisBuild ++= Seq(
