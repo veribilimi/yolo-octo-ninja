@@ -30,7 +30,7 @@ object Application extends Controller {
   }
 
 
-  val token = "CAAE4r0cMaAoBANO8YOeLDm5OHQWXimP56jhqawisYRAHcU6OsYZCZBUMfcvePv6FbdhQYMpdlHuxDoJlPLk8ctdmBWz7asHzZAzx7SUJJmH77PXZABHgQTrrqN5SCsI6WaABikq03wF43SyJZAJwtLKqomdpFe3h55bUT0n3QpblAxPZC4fZB0zsTY6LoqEsYjMATCXBRZAgvNPFjZBfu1GXElvcAbZCYXfX6sHC3jPfyhAgZDZD"
+  val token = "CAAE4r0cMaAoBABvDb4XGMuM9p6ZAMVN4NZAFZAG5CCkZB3wxo8hAKIbSwM4DmG1Do7XxZBHMHTvGWUZCexiJorNawHjzgE5k7sRjEyhvDF5QFUfwBCr8iebX9oX3OonmMQddDJS3It37EsOElhDlsEISX014rCqCwqGnFYKACvkLSYllpqZA4852nZA9qU08AXBxM67Aw6ngQjsuDnwcmkzyLs24iZAc2btoZD"
   val rankingService: PostRankingService = new PostRankingService()
   rankingService.init(token)
 
