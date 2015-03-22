@@ -1,28 +1,55 @@
 @(post: postranker.domain.Post)
 @mainWithNavigation("Post yolo-octo-ninja") {
 
-    <h1>Post page (@post.getFrom.getName) (@post.getSid)</h1>
-    <p>@post.getMessage</p>
-    <hr/>
-    <p>
-
-        <b>postid </b>: @post.getSid <br/>
-
-        <b>likes</b>: @post.getLikes <br/>
-        <b>who</b>: @post.getFrom.getName<br/>
-        <b>date</b>: @post.getCreatedTime<br/>
-        <b>message</b>: <br/>
-
-    </p>
-    <hr/>
-    <h2>Comments</h2>
-    <ul>
-
-    @for(comment <- post.getComments.toList) {
-        <li>
-            <span><b>FROM:</b> @comment.getFrom</span> | <small>likes: <b>@comment.getLikeCount</b></small> <br/>
-            <span>@comment.getMessage</span> <br/> <br/>
-        </li>
+    <table border="0">
+        <tbody>
+            <tr>
+                <td><center><a id="up_9247851" onclick="return vote(this)" href="vote?for=9247851&amp;dir=up&amp;auth=cdd61e1f0103662946311b7e29691f994edef19d&amp;goto=item%3Fid%3D9247851"><div class="votearrow" title="upvote"></div></a><span id="down_9247851"></span></center></td>
+                <td class="title"><span class="deadmark"></span><a href="http://quantombone.blogspot.com/2015/03/deep-learning-vs-machine-learning-vs.html">@post.getMessage.take(100)</a><span class="sitebit comhead"> (quantombone.blogspot.com)</span></td>
+            </tr>
+            <tr><td colspan="1"></td><td class="subtext"><span class="score" id="score_9247851">34 points</span> by <a href="user?id=platz">platz</a> <a href="item?id=9247851">2 hours ago</a>  | <a href="item?id=9247851">5 comments</a></td></tr>
+            <tr style="height:10px"></tr>
+            <!--tr>
+                <td></td>
+                <td>
+                    <form method="post" action="comment">
+                        <input type="hidden" name="parent" value="9247851">
+                        <input type="hidden" name="goto" value="item?id=9247851">
+                        <input type="hidden" name="hmac" value="6ee75f7a44c66808a06ea099aa5be152d8babd41">
+                        <textarea name="text" rows="6" cols="60" style="" placeholder=""></textarea>
+                        <br><br>
+                        <input type="submit" value="add comment">
+                    </form>
+                </td>
+            </tr-->
+            <tr><td></td><td>@post.getMessage</td></tr>
+    </tbody>
+    </table>
+    <br><br>
+    <table border="0">
+        <tbody>
+            @for(comment <- post.getComments.toList) {
+            <tr>
+                <td>
+                    <table border="0">
+                        <tbody>
+                            <tr>
+                                <td><img src="@routes.Assets.at("s.gif")" height="1" width="0"></td>
+                                <td valign="top"><center><a id="up_9247963" onclick="return vote(this)" href="vote?for=9247963&amp;dir=up&amp;auth=987a40ecc79478845cd225515a1434b6e5fff8f4&amp;goto=item%3Fid%3D9247851"><div class="votearrow" title="upvote"></div></a><span id="down_9247963"></span></center></td>
+                                <td class="default">
+                                    <div style="margin-top:2px; margin-bottom:-10px; "><span class="comhead"><a href="user?id=platz">@comment.getFrom</a> <a href="item?id=9247963">1 hour ago</a> <span class="deadmark"></span></span></div>
+                                    <br>
+                                    <span class="comment"><font color="#000000">@comment.getMessage</font></span>
+                                    <p><font size="1"><u><a href="javascript:void()">reply</a></u></font></p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            }            
+        </tbody>
+    </table>
+    <br><br>
+    
     }
-    </ul>
-}
