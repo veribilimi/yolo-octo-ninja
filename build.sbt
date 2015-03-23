@@ -24,6 +24,8 @@ libraryDependencies ++= Seq(
   "org.ocpsoft.prettytime" % "prettytime" % "3.2.5.Final"
 )
 
+libraryDependencies += "com.github.rjeschke" % "txtmark" % "0.13"
+
 
 
 
