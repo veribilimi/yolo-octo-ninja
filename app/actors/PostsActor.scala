@@ -30,7 +30,7 @@ class PostsActor(token: String) extends Actor {
   override def preStart() = {
     rankingService.init(token)
 
-    context.system.scheduler.schedule(0 seconds, 180 seconds, self, SyncFacebookPosts)
+    context.system.scheduler.schedule(0 seconds, 1800 seconds, self, SyncFacebookPosts)
   }
 
   def importFacebookPosts() = {
