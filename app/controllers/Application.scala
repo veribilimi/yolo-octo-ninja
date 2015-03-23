@@ -59,4 +59,12 @@ object Application extends Controller {
   def logout() = play.mvc.Results.TODO
 
   def login() = play.mvc.Results.TODO
+
+
+  def test() = Action{
+    val myList = List("xxx","yyyy","11111", "00000")
+
+    Ok(views.html.test("parametre1",myList))
+  }
+
 }

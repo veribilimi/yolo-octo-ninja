@@ -4,9 +4,12 @@
 
 # Home page
 GET        /                    controllers.Application.index
-GET        /:id                 controllers.Application.post(id:String)
-GET        /user/:id            controllers.Application.user(id:String)
 GET        /logout              controllers.Application.logout()
+GET        /user/:id            controllers.Application.user(id:String)
+GET        /test                controllers.Application.test()
+
+GET        /:id                 controllers.Application.post(id:String)
+
 
 
 # Map static resources from the /public folder to the /assets URL path
