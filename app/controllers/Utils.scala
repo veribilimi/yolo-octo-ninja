@@ -8,6 +8,8 @@ import org.ocpsoft.prettytime.PrettyTime
  */
 object Utils {
   private val urlRegex = """(?i)\b(https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]*[-A-Za-z0-9+&@#/%=~_|]""".r
+
+
   //  lazy val prettyTime =  new PrettyTime(new Locale("tr"))
   lazy val prettyTime = new PrettyTime
 
@@ -23,9 +25,11 @@ object Utils {
   def parseComment(s: String) = {
     val p1 = markdown.parse(s)
     val p2 = linkify(p1)
-    p2
+    removeH1(p2)
   }
 
   def linkify(s:String) = urlRegex replaceAllIn(s, m => """<a href="%s" target="aaa">%s</a>""" format(m.matched, m.matched))
+
+  def removeH1(s:String) = s.replaceAll("<h1>","#").replaceAll("</h1>","")
 
 }
