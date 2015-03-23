@@ -3,7 +3,9 @@ package controllers
 
 import actors.UserActor.api.{GetUser, Profile}
 import actors.{UserActor, PostsActor}
-import actors.PostsActor.api.{GetPost, Get24hPosts}
+import actors.PostsActor.api.{GetPostsByRank, GetPost, GetPostsByUpdateDate, GetPostsByCreationDate}
+import play.api.data._
+import play.api.data.Forms._
 import play.api.mvc._
 import postranker.domain.Post
 import akka.pattern.ask
@@ -17,12 +19,19 @@ object Application extends Controller {
   lazy val userActor = UserActor()
 
 
-  def index = Action.async {
+  def index() = posts("rank")
 
-    (postsActor ? Get24hPosts).mapTo[List[Post]] map { posts =>
-      Ok(views.html.index(posts))
+  def posts(sort: String = "rank") = Action.async {
+    val sortByCommand = sort match {
+      case "rank" => GetPostsByRank
+      case "newest" => GetPostsByCreationDate
+      case "lastUpdated" => GetPostsByUpdateDate
+      case _ => GetPostsByRank
     }
 
+    (postsActor ? sortByCommand).mapTo[List[Post]] map { posts =>
+      Ok(views.html.index(posts))
+    }
   }
 
 
@@ -56,15 +65,58 @@ object Application extends Controller {
   }
 
 
-  def logout() = play.mvc.Results.TODO
-
-  def login() = play.mvc.Results.TODO
-
-
-  def test() = Action{
-    val myList = List("xxx","yyyy","11111", "00000")
-
-    Ok(views.html.test("parametre1",myList))
+  def logout() = Action {
+    Redirect("/") withNewSession
   }
 
+
+  def showLoginPage() = Action { request =>
+    Ok(views.html.login())
+  }
+
+  def authenticate() = Action { request =>
+    //todo change this function with real implementation
+    def stupidAuth = (u: String, p: String) => if (p == "password") Some(Profile("TODO_ID", u)) else None
+
+    val mayBeProfile = for {
+      data <- request.body.asFormUrlEncoded
+
+      usernameSeq <- data.get("username")
+      username <- usernameSeq.headOption
+
+      passwordSeq <- data.get("password")
+      password <- passwordSeq.headOption
+
+      authenticatedUser <- stupidAuth(username, password)
+
+    } yield authenticatedUser
+
+
+
+    mayBeProfile map { profile =>
+
+      Redirect("/").withSession("username" -> profile.username)
+
+    } getOrElse {
+
+      Forbidden("sorry wrong pass or username")
+
+    }
+  }
+
+
+  def showRegisterPage() = Action {
+    Ok(views.html.register())
+  }
+
+
+  def test() = Action {
+    val myList = List("xxx", "yyyy", "11111", "00000")
+
+    Ok(views.html.test("parametre1", myList))
+  }
+
+  def submit() = Action {
+    Ok(views.html.submit())
+  }
 }

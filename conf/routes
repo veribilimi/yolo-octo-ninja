@@ -3,14 +3,23 @@
 # ~~~~
 
 # Home page
-GET        /                    controllers.Application.index
-GET        /logout              controllers.Application.logout()
-GET        /user/:id            controllers.Application.user(id:String)
-GET        /test                controllers.Application.test()
+GET         /                    controllers.Application.index()
+GET         /posts               controllers.Application.posts(sort:String)
+GET         /post/:id            controllers.Application.post(id:String)
+GET         /submit              controllers.Application.submit()
 
-GET        /:id                 controllers.Application.post(id:String)
+GET         /login               controllers.Application.showLoginPage()
+POST        /login               controllers.Application.authenticate()
+
+GET         /register            controllers.Application.showRegisterPage()
+GET         /logout              controllers.Application.logout()
+
+GET         /user/:id            controllers.Application.user(id:String)
+
+GET         /test                controllers.Application.test()
+
 
 
 
 # Map static resources from the /public folder to the /assets URL path
-GET        /assets/*file        controllers.Assets.at(path="/public", file)
+GET         /assets/*file        controllers.Assets.at(path="/public", file)

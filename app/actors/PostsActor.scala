@@ -1,7 +1,7 @@
 package actors
 
 import actors.PostsActor.api._
-import actors.PostsActor.rankPosts
+import actors.PostsActor._
 
 import akka.actor.{Props, Actor}
 import play.libs.Akka
@@ -16,15 +16,28 @@ import scala.concurrent.ExecutionContext.Implicits.global
  */
 class PostsActor(token: String) extends Actor {
   val rankingService: PostRankingService = new PostRankingService()
+
   var posts: List[Post] = Nil
+
+  var postsSortedByRank: List[Post] = Nil
+
+  var postsSortedByUpdateDate: List[Post] = Nil
 
   override def receive: Receive = {
 
-    case Get24hPosts       => sender ! posts
+    case GetPostsByRank         => sender ! postsSortedByRank
 
-    case GetPost(id)       => sender ! posts.find(_.getSid == id)
+    case GetPostsByUpdateDate   => sender ! postsSortedByUpdateDate
 
-    case SyncFacebookPosts => Future(posts = importFacebookPosts sortBy rankPosts)
+    case GetPostsByCreationDate => sender ! posts
+
+    case GetPost(id)            => sender ! posts.find(_.getSid == id)
+
+    case SyncFacebookPosts      => Future {
+                                     postsSortedByUpdateDate = importFacebookPosts sortBy order.byUpdateDate
+                                     posts = postsSortedByUpdateDate sortBy order.byCreationDate
+                                     postsSortedByRank = postsSortedByUpdateDate sortBy order.byRank
+                                   }
   }
 
   override def preStart() = {
@@ -44,13 +57,22 @@ class PostsActor(token: String) extends Actor {
 
 object PostsActor {
   val token = "343800439138314|EfAO_J7NepZsopex7pTx83hlFU0"
-  val rankPosts: (Post) => Int = p => -(p.getComments.size + p.getLikes.size)
+
+  object order {
+    val byRank: (Post) => Int = p => -(p.getComments.size + p.getLikes.size)
+    val byUpdateDate: (Post) => Long = p => -p.getUpdatedTime.getTime
+    val byCreationDate: (Post) => Long = p => -p.getCreatedTime.getTime
+  }
 
   object api {
 
     case class GetPost(id: String)
 
-    object Get24hPosts
+    object GetPostsByRank
+
+    object GetPostsByUpdateDate
+
+    object GetPostsByCreationDate
 
     object SyncFacebookPosts
 
