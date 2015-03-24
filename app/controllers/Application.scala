@@ -7,7 +7,7 @@ import actors.PostsActor.api.{GetPostsByRank, GetPost, GetPostsByUpdateDate, Get
 import play.api.data._
 import play.api.data.Forms._
 import play.api.mvc._
-import postranker.domain.Post
+import facebookapi.domain.Post
 import akka.pattern.ask
 import scala.concurrent.Future
 import scala.concurrent.duration._

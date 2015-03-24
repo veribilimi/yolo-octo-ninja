@@ -5,8 +5,8 @@ import actors.PostsActor._
 
 import akka.actor.{Props, Actor}
 import play.libs.Akka
-import postranker.PostRankingService
-import postranker.domain.Post
+import facebookapi.FacebookApiService
+import facebookapi.domain.Post
 import scala.concurrent.Future
 import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -15,7 +15,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
  * Created by sumnulu on 22/03/15.
  */
 class PostsActor(token: String) extends Actor {
-  val rankingService: PostRankingService = new PostRankingService()
+  val rankingService: FacebookApiService = new FacebookApiService()
 
   var posts: List[Post] = Nil
 
@@ -48,7 +48,7 @@ class PostsActor(token: String) extends Actor {
 
   def importFacebookPosts() = {
     import scala.collection.JavaConversions._
-    val posts: List[Post] = rankingService.getPosts.toList
+    val posts: List[Post] = rankingService.getPosts("418686428146403").toList
     posts
   }
 
