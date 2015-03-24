@@ -19,7 +19,7 @@ object Application extends Controller {
   lazy val postsActor = PostsActor()
   lazy val userActor = UserActor()
 
-  val NumberOfItemsForEachPage = 100
+  val NumberOfItemsForEachPage = 40
 
   def index(page: Int = 1) = posts("rank", page)
 
