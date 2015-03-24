@@ -1,7 +1,7 @@
 package controllers
 
 
-import actors.UserActor.api.{GetUser, Profile}
+import actors.UserActor.api.{BasicAuth, GetUser, Profile}
 import actors.{UserActor, PostsActor}
 import actors.PostsActor.api.{GetPostsByRank, GetPost, GetPostsByUpdateDate, GetPostsByCreationDate}
 import play.api.data._
@@ -9,6 +9,7 @@ import play.api.data.Forms._
 import play.api.mvc._
 import postranker.domain.Post
 import akka.pattern.ask
+import scala.concurrent.Future
 import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext.Implicits.global
 import akka.util.Timeout
@@ -74,34 +75,33 @@ object Application extends Controller {
     Ok(views.html.login())
   }
 
-  def authenticate() = Action { request =>
-    //todo change this function with real implementation
-    def stupidAuth = (u: String, p: String) => if (p == "password") Some(Profile("TODO_ID", u)) else None
+  def authenticate() = Action.async { request =>
 
-    val mayBeProfile = for {
-      data <- request.body.asFormUrlEncoded
+    val maybeBasicAuth = for {
+      formData <- request.body.asFormUrlEncoded
 
-      usernameSeq <- data.get("username")
+      usernameSeq <- formData.get("username")
       username <- usernameSeq.headOption
 
-      passwordSeq <- data.get("password")
+      passwordSeq <- formData.get("password")
       password <- passwordSeq.headOption
-
-      authenticatedUser <- stupidAuth(username, password)
-
-    } yield authenticatedUser
+    } yield BasicAuth(username, password)
 
 
+    maybeBasicAuth.map { ba =>
 
-    mayBeProfile map { profile =>
+      (userActor ? ba).mapTo[Option[Profile]] map { maybeProfile =>
 
-      Redirect("/").withSession("username" -> profile.username)
+        maybeProfile map { profile =>
 
-    } getOrElse {
+          Redirect("/").withSession("username" -> profile.username)
 
-      Forbidden("sorry wrong pass or username")
+        } getOrElse Forbidden("Error: wrong password or username")
+      }
 
-    }
+    } getOrElse (Future successful Forbidden("Error: form does not contain username or password fields!"))
+
+
   }
 
 
