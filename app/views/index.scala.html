@@ -1,30 +1,17 @@
 @(posts: List[postranker.domain.Post])
 @mainWithNavigation("Yolo-octo-ninja") {
 
-    <table border="0" cellpadding="0" cellspacing="0">
-        <tbody>
+      <ol class="posts">
             @for((post,index) <- posts.zipWithIndex) {
-                <tr>
-                    <td align="right" valign="top" class="title"><span class="rank"> @(1+index) .</span></td>
-                    <td><center><a id="up_9245980" onclick="return vote(this)" href="https://news.ycombinator.com/vote?for=9245980&dir=up&auth=a03b13651e68cb49ad4d0b48d24162d9b6be113a&goto=news"><div class="votearrow" title="upvote"></div></a><span id="down_9245980"></span></center></td>
-                    <td class="title"><span class="deadmark"></span><a href="@routes.Application.post(post.getSid)">@post.getMessage.take(100)</a><span class="sitebit comhead"> (hsmr.cc)</span></td>
-                </tr>
-                <tr>
-                    <td colspan="2"></td>
-                    <td class="subtext">
-                        <span class="score" id="score_9245980">@(post.getComments.size + post.getLikes.size) points</span>
-                        by <a href="@routes.Application.user(post.getFrom.getName)"><font color="#3c963c">@post.getFrom.getName</font></a>
-                        <a href="@routes.Application.post(post.getSid)">@(controllers.Utils.prettyTime.format(post.getCreatedTime))</a>  |
-                        <a href="@routes.Application.post(post.getSid)">@(post.getComments.size) comments @(post.getLikes.size) likes</a>
-                    </td>
-                </tr>
-                <tr style="height:5px"></tr>
+
+            <li>
+          <div class="post-title"><i class="fa fa-star-o"></i> <i class="fa fa-caret-up"></i> <a href="@routes.Application.post(post.getSid)">@post.getMessage.take(500)</a></div>
+          <div class="post-details">@(post.getComments.size + post.getLikes.size) points by <a href="@routes.Application.user(post.getFrom.getName)">@post.getFrom.getName</a> <a href="@routes.Application.post(post.getSid)">@(controllers.Utils.prettyTime.format(post.getCreatedTime))</a> | <a href="@routes.Application.post(post.getSid)">@(post.getComments.size) comments @(post.getLikes.size) likes</a></div>
+        </li>
             }
 
-            <tr style="height:5px"></tr>
-            <tr style="height:10px"></tr>
-            <tr><td colspan="2"></td><td class="title"><a href="https://news.ycombinator.com/news?p=2" rel="nofollow">More</a></td></tr>
-        </tbody>
-    </table>
+</ol>
+      <a href="#">show more <i class="fa fa-caret-down"></i></a>
+
 
 }
