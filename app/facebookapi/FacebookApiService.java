@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package postranker;
+package facebookapi;
 
 import java.util.Date;
 import java.util.LinkedList;
@@ -13,40 +13,40 @@ import org.springframework.social.facebook.api.PagedList;
 import org.springframework.social.facebook.api.PagingParameters;
 import org.springframework.social.facebook.api.Post.PostType;
 import org.springframework.social.facebook.api.impl.FacebookTemplate;
-import postranker.domain.AppUser;
-import postranker.domain.Comment;
-import postranker.domain.Post;
+import facebookapi.domain.AppUser;
+import facebookapi.domain.Comment;
+import facebookapi.domain.Post;
 
 /**
  * Retrieves posts and comments from FB Groups, and ranks them
  *
  * @author Fatih Mehmet Güler
  */
-public class PostRankingService {
+public class FacebookApiService {
     private Facebook facebook;
-    private String groupId = "418686428146403";
 
     public void init(String token) {
         facebook = new FacebookTemplate(token);
     }
 
-    public List<Post> getPosts() {
-        return getPosts(7);
+    public List<Post> getPosts(String groupId) {
+        return getPosts(groupId, 7);
     }
 
-    public List<Post> getPosts(int days) {
+    public List<Post> getPosts(String groupId, int days) {
         LinkedList<Post> result = new LinkedList();
         Date till = new Date(new Date().getTime() - (1000 * 60 * 60 * 24 * days));
 
         PagingParameters pp = null;
         while (true) {
             PagedList<org.springframework.social.facebook.api.Post> fbPosts = pp == null ? facebook.feedOperations().getFeed(groupId) : facebook.feedOperations().getFeed(groupId, pp);
+            if (fbPosts.isEmpty()) break;
 
             for (org.springframework.social.facebook.api.Post fbPost : fbPosts) {
                 Post post = new Post();
                 post.setSid(fbPost.getId());
                 post.setMessage(fbPost.getMessage());
-                if (fbPost.getMessage() == null){
+                if (fbPost.getMessage() == null) {
                     if (fbPost.getType() == PostType.LINK) post.setMessage(fbPost.getLink());
                     else post.setMessage("???NULL???");
                 }
@@ -54,14 +54,23 @@ public class PostRankingService {
                 post.setUpdatedTime(fbPost.getUpdatedTime());
                 post.setFrom(new AppUser(fbPost.getFrom().getId(), fbPost.getFrom().getName()));
 
-                for (org.springframework.social.facebook.api.Comment fbComment : fbPost.getComments()) {
-                    Comment comment = new Comment();
-                    comment.setSid(fbComment.getId());
-                    comment.setFrom(new AppUser(fbComment.getFrom().getId(), fbComment.getFrom().getName()));
-                    comment.setCreatedTime(fbComment.getCreatedTime());
-                    comment.setLikeCount(fbComment.getLikesCount());
-                    comment.setMessage(fbComment.getMessage());
-                    post.getComments().add(comment);
+                //get the comments (may be paginated)
+                PagingParameters ppc = null;
+                while (true) {
+                    PagedList<org.springframework.social.facebook.api.Comment> fbComments = ppc == null ? facebook.commentOperations().getComments(fbPost.getId()) : facebook.commentOperations().getComments(fbPost.getId(), ppc);
+                    if (fbComments.isEmpty()) break;
+
+                    for (org.springframework.social.facebook.api.Comment fbComment : fbComments) {
+                        Comment comment = new Comment();
+                        comment.setSid(fbComment.getId());
+                        comment.setFrom(new AppUser(fbComment.getFrom().getId(), fbComment.getFrom().getName()));
+                        comment.setCreatedTime(fbComment.getCreatedTime());
+                        comment.setLikeCount(fbComment.getLikesCount());
+                        comment.setMessage(fbComment.getMessage());
+                        post.getComments().add(comment);
+                    }
+                    ppc = fbComments.getNextPage();
+                    if (ppc == null) break;
                 }
 
                 if (fbPost.getLikes() != null) {
@@ -74,7 +83,11 @@ public class PostRankingService {
             }
 
             //check if the last post date is before the till date stop getting posts
-            if (result.getLast().getCreatedTime().before(till)) break;
+            Date postDate = result.getLast().getUpdatedTime() == null ? result.getLast().getCreatedTime() : result.getLast().getUpdatedTime();
+            if (postDate.before(till)) {
+                System.out.println("found some post before till date, breaking");
+                break;
+            }
 
             //proceed to next page (earlier)
             pp = fbPosts.getNextPage();

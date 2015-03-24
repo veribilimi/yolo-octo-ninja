@@ -3,27 +3,28 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package postranker;
+package facebookapi;
 
 import java.util.List;
-import postranker.domain.Comment;
-import postranker.domain.Post;
+import facebookapi.domain.Comment;
+import facebookapi.domain.Post;
 
 /**
  * Rank
  *
  * @author Fatih
  */
-public class PostRanker {
+public class FacebookApiServiceTest {
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        PostRankingService rankingService = new PostRankingService();
-        rankingService.init("CAAE4r0cMaAoBAIatmzQNnZB45QyrbkvekDqmB5zfQfHz1Uj7RCEPLFqADk8ZBw5uTegWZBbgc3zqPC1NQ25S2ELE5TdW1Woq1oJ32PL0uJTkyuBDG0iPwEtaDDWU0iG4BavJ8lZCQ39wtA1CGNlO2j5I1qnrNZApJyZBasClgny7v88Om9biTZARxXbOMhSrEoXHePQsyc1GuIkMQVpZAZCQ0r7msjDsbnJgZD");
-        List<Post> posts = rankingService.getPosts(7);
+        String groupId = "418686428146403";
+        FacebookApiService rankingService = new FacebookApiService();
+        rankingService.init("343800439138314|EfAO_J7NepZsopex7pTx83hlFU0");
+        List<Post> posts = rankingService.getPosts(groupId, 7);
         System.out.println(posts.size());
         for (Post post : posts) {
             System.out.println("**POST**");
