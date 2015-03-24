@@ -15,6 +15,12 @@ import scala.concurrent.ExecutionContext.Implicits.global
  * Created by sumnulu on 22/03/15.
  */
 class PostsActor(token: String) extends Actor {
+  val InitialFacebookSyncNumberOfDays = 14
+  val DefaultFacebookSyncNumberOfDays = 1
+
+  val FacebookSyncEvery = 1800 seconds
+
+
   val rankingService: FacebookApiService = new FacebookApiService()
 
   var posts: List[Post] = Nil
@@ -25,30 +31,35 @@ class PostsActor(token: String) extends Actor {
 
   override def receive: Receive = {
 
-    case GetPostsByRank         => sender ! postsSortedByRank
+    case GetPostsByRank(d,t)         => sender ! postsSortedByRank.drop(d).take(t)
 
-    case GetPostsByUpdateDate   => sender ! postsSortedByUpdateDate
+    case GetPostsByUpdateDate(d,t)   => sender ! postsSortedByUpdateDate.drop(d).take(t)
 
-    case GetPostsByCreationDate => sender ! posts
+    case GetPostsByCreationDate(d,t) => sender ! posts.drop(d).take(t)
 
-    case GetPost(id)            => sender ! posts.find(_.getSid == id)
+    case GetPost(id)                 => sender ! posts.find(_.getSid == id)
 
-    case SyncFacebookPosts      => Future {
-                                     postsSortedByUpdateDate = importFacebookPosts sortBy order.byUpdateDate
-                                     posts = postsSortedByUpdateDate sortBy order.byCreationDate
-                                     postsSortedByRank = postsSortedByUpdateDate sortBy order.byRank
-                                   }
+    case SyncFacebookPosts(days)     => Future {
+                                          postsSortedByUpdateDate = importFacebookPosts(days) sortBy order.byUpdateDate
+                                          posts = postsSortedByUpdateDate sortBy order.byCreationDate
+                                          postsSortedByRank = postsSortedByUpdateDate sortBy order.byRank
+                                        }
   }
 
   override def preStart() = {
+    import context.system
     rankingService.init(token)
 
-    context.system.scheduler.schedule(0 seconds, 1800 seconds, self, SyncFacebookPosts)
+    //Initial Facebook sync (fetches more posts i.e. slow)
+    system.scheduler.scheduleOnce(10 second, self, SyncFacebookPosts(InitialFacebookSyncNumberOfDays))
+
+    //Normal Facebook sync (faster)
+    system.scheduler.schedule(0 second, FacebookSyncEvery, self, SyncFacebookPosts(DefaultFacebookSyncNumberOfDays))
   }
 
-  def importFacebookPosts() = {
+  def importFacebookPosts(days:Int) = {
     import scala.collection.JavaConversions._
-    val posts: List[Post] = rankingService.getPosts("418686428146403",20).toList
+    val posts: List[Post] = rankingService.getPosts("418686428146403",days).toList
     posts
   }
 
@@ -56,7 +67,9 @@ class PostsActor(token: String) extends Actor {
 
 
 object PostsActor {
+  //todo move this to application.conf
   val token = "343800439138314|EfAO_J7NepZsopex7pTx83hlFU0"
+
 
   object order {
     val byRank: (Post) => Int = p => -(p.getComments.size + p.getLikes.size)
@@ -68,13 +81,13 @@ object PostsActor {
 
     case class GetPost(id: String)
 
-    object GetPostsByRank
+    case class GetPostsByRank(drop: Int = 0, take: Int = 100)
 
-    object GetPostsByUpdateDate
+    case class GetPostsByUpdateDate(drop: Int = 0, take: Int = 100)
 
-    object GetPostsByCreationDate
+    case class GetPostsByCreationDate(drop: Int = 0, take: Int = 100)
 
-    object SyncFacebookPosts
+    case class SyncFacebookPosts(days:Int)
 
   }
 

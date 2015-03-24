@@ -19,19 +19,30 @@ object Application extends Controller {
   lazy val postsActor = PostsActor()
   lazy val userActor = UserActor()
 
+  val NumberOfItemsForEachPage = 100
 
-  def index() = posts("rank")
+  def index(page: Int = 1) = posts("rank", page)
 
-  def posts(sort: String = "rank") = Action.async {
+  def posts(sort: String = "rank", page: Int = 1) = Action.async {
+    val currentPage = if (page < 1) 1 else page
+
+    val take = NumberOfItemsForEachPage + 1
+    val drop = NumberOfItemsForEachPage * (currentPage - 1)
+
     val sortByCommand = sort match {
-      case "rank" => GetPostsByRank
-      case "newest" => GetPostsByCreationDate
-      case "lastUpdated" => GetPostsByUpdateDate
-      case _ => GetPostsByRank
+      case "rank" => GetPostsByRank(drop, take)
+      case "newest" => GetPostsByCreationDate(drop, take)
+      case "lastUpdated" => GetPostsByUpdateDate(drop, take)
+      case _ => GetPostsByRank(drop, take)
     }
 
-    (postsActor ? sortByCommand).mapTo[List[Post]] map { posts =>
-      Ok(views.html.index(posts))
+    (postsActor ? sortByCommand).mapTo[List[Post]] map { _posts =>
+      val posts = _posts take NumberOfItemsForEachPage
+
+      val nextPage = if (_posts.size <= NumberOfItemsForEachPage) 1 else currentPage + 1
+      val firstRank = 1 + (NumberOfItemsForEachPage * (-1 + currentPage))
+
+      Ok(views.html.index(posts)(sort, firstRank, currentPage, nextPage))
     }
   }
 

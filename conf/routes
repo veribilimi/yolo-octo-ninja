@@ -3,8 +3,8 @@
 # ~~~~
 
 # Home page
-GET         /                    controllers.Application.index()
-GET         /posts               controllers.Application.posts(sort:String)
+GET         /                    controllers.Application.index(page: Int ?= 1)
+GET         /posts               controllers.Application.posts(sort:String?="rank", page: Int ?= 1)
 GET         /post/:id            controllers.Application.post(id:String)
 GET         /submit              controllers.Application.submit()
 
