@@ -23,6 +23,8 @@ class PostsActor(token: String) extends Actor {
 
   val rankingService: FacebookApiService = new FacebookApiService()
 
+  var allPosts: List[Post] = Nil
+
   var posts: List[Post] = Nil
 
   var postsSortedByRank: List[Post] = Nil
@@ -40,10 +42,21 @@ class PostsActor(token: String) extends Actor {
     case GetPost(id)                 => sender ! posts.find(_.getSid == id)
 
     case SyncFacebookPosts(days)     => Future {
-                                          postsSortedByUpdateDate = importFacebookPosts(days) sortBy order.byUpdateDate
-                                          posts = postsSortedByUpdateDate sortBy order.byCreationDate
-                                          postsSortedByRank = postsSortedByUpdateDate sortBy order.byRank
-                                        }
+                                         val now = System.currentTimeMillis
+                                         val deltaDate = 1000 * 60 * 60 * 24 * InitialFacebookSyncNumberOfDays
+                                         val minDate = now - deltaDate
+
+                                         val facebookResult = importFacebookPosts(days)
+
+                                         //todo fixme inefficient
+                                         val notUpdatedPosts = allPosts.filterNot(p => facebookResult.exists(fb => fb.getSid == p.getSid))
+
+                                         allPosts = (facebookResult ::: notUpdatedPosts) sortBy order.byUpdateDate
+
+                                         postsSortedByUpdateDate = allPosts takeWhile (p => p.getUpdatedTime.getTime > minDate)
+                                         posts = postsSortedByUpdateDate sortBy order.byCreationDate
+                                         postsSortedByRank = postsSortedByUpdateDate sortBy order.byRank
+                                       }
   }
 
   override def preStart() = {
