@@ -33,4 +33,12 @@ object Utils {
 
   def removeH1(s: String) = s.replaceAll("<h1>", "#").replaceAll("</h1>", "")
 
+  def renderName(s: String) = {
+
+    val spliced = s.split(" ").toList
+    val initialPart = spliced.headOption.map(_ head).getOrElse("_") + "."
+    val tailPart = spliced.drop(1)
+    (initialPart :: tailPart).mkString(" ")
+  }
+
 }

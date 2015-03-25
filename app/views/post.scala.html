@@ -1,5 +1,6 @@
 @(post: facebookapi.domain.Post)
 @import controllers.Utils.parseComment
+@import controllers.Utils.renderName
 @mainWithNavigation("Post yolo-octo-ninja") {
 
 
@@ -20,7 +21,7 @@
                 <td colspan="1"></td>
                 <td class="subtext">
                     <span class="score" id="score_9247851">@(post.getComments.size + post.getLikes.size) points</span>
-                    by <a href="@routes.Application.user(post.getFrom.getName)">@(post.getFrom.getName)</a>
+                    by <a href="@routes.Application.user(renderName(post.getFrom.getName))">@renderName(post.getFrom.getName)</a>
                     <a href="javascript:void()">@controllers.Utils.prettyTime.format(post.getCreatedTime)</a>  |
                     <a href="javascript:void()">@(post.getComments.size) comments</a>
                 </td>

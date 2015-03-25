@@ -1,4 +1,5 @@
 @(posts: List[facebookapi.domain.Post])(sort:String, firstRank:Int, currentPage:Int, nextPage:Int)
+@import controllers.Utils.renderName
 @mainWithNavigation("Yolo-octo-ninja") {
 
     <table border="0" cellpadding="0" cellspacing="0">
@@ -13,7 +14,7 @@
                     <td colspan="2"></td>
                     <td class="subtext">
                         <span class="score" id="score_9245980">@(post.getComments.size + post.getLikes.size) points</span>
-                        by <a href="@routes.Application.user(post.getFrom.getName)"><font color="#3c963c">@post.getFrom.getName</font></a>
+                        by <a href="@routes.Application.user(renderName(post.getFrom.getName))"><font color="#3c963c">@renderName(post.getFrom.getName)</font></a>
                         <a href="@routes.Application.post(post.getSid)">@(controllers.Utils.prettyTime.format(post.getCreatedTime))</a>  |
                         <a href="@routes.Application.post(post.getSid)">@(post.getComments.size) comments @(post.getLikes.size) likes</a>
                     </td>
@@ -25,7 +26,7 @@
             <tr style="height:10px"></tr>
             <tr>
                 <td colspan="2"></td>
-                <td class="title"><a href="@routes.Application.posts(sort,nextPage)" rel="nofollow">More</a></td>
+                <td class="title"><a href="@routes.Application.posts(sort,nextPage)">More</a></td>
             </tr>
         </tbody>
     </table>
