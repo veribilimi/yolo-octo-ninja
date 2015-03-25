@@ -23,13 +23,14 @@ object Utils {
   }
 
   def parseComment(s: String) = {
-    val p1 = markdown.parse(s)
-    val p2 = linkify(p1)
-    removeH1(p2)
+    var p = s
+    p = linkify(p)
+    p = markdown.parse(p)
+    removeH1(p)
   }
 
-  def linkify(s:String) = urlRegex replaceAllIn(s, m => """<a href="%s" target="aaa">%s</a>""" format(m.matched, m.matched))
+  def linkify(s: String) = urlRegex replaceAllIn(s, m => """<a href="%s" target="aaa">%s</a>""" format(m.matched, m.matched))
 
-  def removeH1(s:String) = s.replaceAll("<h1>","#").replaceAll("</h1>","")
+  def removeH1(s: String) = s.replaceAll("<h1>", "#").replaceAll("</h1>", "")
 
 }
