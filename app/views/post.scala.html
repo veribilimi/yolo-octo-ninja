@@ -67,7 +67,7 @@
                                 <td class="default">
                                     <div style="margin-top:2px; margin-bottom: -1px; ">
                                         <span class="comhead">
-                                            <a href="@routes.Application.user(comment.getFrom.getName)">@comment.getFrom.getName</a>
+                                            <a href="@routes.Application.user(renderName(comment.getFrom.getName))">@renderName(comment.getFrom.getName)</a>
                                             <a href="javascript:void()">@controllers.Utils.prettyTime.format(comment.getCreatedTime)</a>
                                             <span class="deadmark"></span>
                                         </span>
