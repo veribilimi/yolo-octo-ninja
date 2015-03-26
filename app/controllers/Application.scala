@@ -133,4 +133,16 @@ object Application extends Controller {
   def submit() = Action {
     Ok(views.html.submit())
   }
+
+
+  def robots = Action{
+    Ok(
+      """
+        |User-agent: *
+        |Disallow: /
+      """.stripMargin)
+  }
+
+
+
 }
