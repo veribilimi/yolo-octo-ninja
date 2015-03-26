@@ -141,5 +141,12 @@ public class Post {
     public void setLink(URL link) {
         this.link = link;
     }
+    
+    public String getPrettyLink(){
+        String host = link.getHost();
+        if (host.equals("facebook.com")) return "StartupIstanbul";
+        if (host.startsWith("www.")) host = host.substring(4);
+        return host;
+    }
 
 }
