@@ -84,6 +84,9 @@ class PostsActor(token: String) extends Actor {
     //Initial Facebook sync (fetches more posts i.e. slow)
     system.scheduler.scheduleOnce(10 second, self, SyncFacebookPosts(InitialFacebookSyncNumberOfDays))
 
+    //initial get 60 day sync for once
+    system.scheduler.scheduleOnce(2 minutes, self, SyncFacebookPosts(60))
+
     //Normal Facebook sync (faster)
     system.scheduler.schedule(0 second, FacebookSyncEvery, self, SyncFacebookPosts(DefaultFacebookSyncNumberOfDays))
   }
