@@ -166,5 +166,14 @@ object Application extends Controller {
 
   }
 
+  def robots = Action{
+    Ok(
+      """
+        |User-agent: *
+        |Disallow: /
+      """.stripMargin)
+  }
+
+
 
 }
