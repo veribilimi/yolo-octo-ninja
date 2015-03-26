@@ -3,7 +3,7 @@ package controllers
 
 import actors.UserActor.api.{BasicAuth, GetUser, Profile}
 import actors.{UserActor, PostsActor}
-import actors.PostsActor.api.{GetPostsByRank, GetPost, GetPostsByUpdateDate, GetPostsByCreationDate}
+import actors.PostsActor.api._
 import play.api.data._
 import play.api.data.Forms._
 import play.api.mvc._
@@ -35,6 +35,7 @@ object Application extends Controller {
                                     case "week"         => GetPostsByRank(drop, take,"week")
                                     case "newest"       => GetPostsByCreationDate(drop, take)
                                     case "lastUpdated"  => GetPostsByUpdateDate(drop, take)
+                                    case "all"          => GetAllPosts(drop, take)
                                     case _              => GetPostsByRank(drop, take)
                                    }
 

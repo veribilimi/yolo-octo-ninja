@@ -48,6 +48,8 @@ class PostsActor(token: String) extends Actor {
 
     case GetPostsByUpdateDate(d,t)   => sender ! postsSortedByUpdateDate.drop(d).take(t)
 
+    case GetAllPosts(d,t)   => sender ! postsSortedByUpdateDate.drop(d).take(t)
+
     case GetPostsByCreationDate(d,t) => sender ! postsSortedByCreation.drop(d).take(t)
 
     case GetPost(id)                 => sender ! postsSortedByCreation.find(_.getSid == id)
@@ -114,6 +116,8 @@ object PostsActor {
     case class GetPostsByRank(drop: Int = 0, take: Int = 100, cutOffDay: String = "default")
 
     case class GetPostsByUpdateDate(drop: Int = 0, take: Int = 100)
+
+    case class GetAllPosts(drop: Int = 0, take: Int = 100)
 
     case class GetPostsByCreationDate(drop: Int = 0, take: Int = 100)
 
