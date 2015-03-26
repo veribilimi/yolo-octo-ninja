@@ -5,6 +5,7 @@
  */
 package facebookapi.domain;
 
+import java.net.URL;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -20,6 +21,7 @@ public class Post {
     private AppUser from;
     private Date createdTime;
     private Date updatedTime;
+    private URL link;
     private List<AppUser> likes;
     private List<Comment> comments;
 
@@ -124,6 +126,20 @@ public class Post {
      */
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    /**
+     * @return the link
+     */
+    public URL getLink() {
+        return link;
+    }
+
+    /**
+     * @param link the link to set
+     */
+    public void setLink(URL link) {
+        this.link = link;
     }
 
 }

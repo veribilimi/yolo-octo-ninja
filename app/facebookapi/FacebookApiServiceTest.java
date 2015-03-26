@@ -24,10 +24,11 @@ public class FacebookApiServiceTest {
         String groupId = "418686428146403";
         FacebookApiService rankingService = new FacebookApiService();
         rankingService.init("343800439138314|EfAO_J7NepZsopex7pTx83hlFU0");
-        List<Post> posts = rankingService.getPosts(groupId, 7);
+        List<Post> posts = rankingService.getPosts(groupId, 1);
         System.out.println(posts.size());
         for (Post post : posts) {
             System.out.println("**POST**");
+            System.out.println("Link: " + post.getLink());
             System.out.println("Sender: " + post.getFrom().getName());
             System.out.println("Date: " + post.getCreatedTime());
             System.out.println("Likes: " + post.getLikes());

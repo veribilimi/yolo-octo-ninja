@@ -11,11 +11,12 @@ import java.util.List;
 import org.springframework.social.facebook.api.Facebook;
 import org.springframework.social.facebook.api.PagedList;
 import org.springframework.social.facebook.api.PagingParameters;
-import org.springframework.social.facebook.api.Post.PostType;
 import org.springframework.social.facebook.api.impl.FacebookTemplate;
 import facebookapi.domain.AppUser;
 import facebookapi.domain.Comment;
 import facebookapi.domain.Post;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * Retrieves posts and comments from FB Groups, and ranks them
@@ -47,12 +48,23 @@ public class FacebookApiService {
                 post.setSid(fbPost.getId());
                 post.setMessage(fbPost.getMessage());
                 if (fbPost.getMessage() == null) {
-                    if (fbPost.getType() == PostType.LINK) post.setMessage(fbPost.getLink());
+                    if (fbPost.getLink() != null) post.setMessage(fbPost.getLink());
                     else post.setMessage("???NULL???");
                 }
                 post.setCreatedTime(fbPost.getCreatedTime());
                 post.setUpdatedTime(fbPost.getUpdatedTime());
                 post.setFrom(new AppUser(fbPost.getFrom().getId(), fbPost.getFrom().getName()));
+                //also add the link
+                try {
+                    post.setLink(new URL(fbPost.getLink()));
+                } catch (MalformedURLException ex) {
+                    String[] ids = fbPost.getId().split("_");
+                    try {
+                        post.setLink(new URL("https://www.facebook.com/" + ids[0] + "/posts/" + ids[1]));
+                    } catch (MalformedURLException ex1) {                        
+                        post.setLink(null);
+                    }
+                }
 
                 //get the comments (may be paginated)
                 PagingParameters ppc = null;
