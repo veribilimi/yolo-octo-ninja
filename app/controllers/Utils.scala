@@ -40,4 +40,11 @@ object Utils {
     (headPart ::: surnamePart).mkString(" ")
   }
 
+
+  def lastNDayFromNow(day:Int) = {
+    val now = System.currentTimeMillis
+    val deltaDate = 1000 * 60 * 60 * 24 * day
+    now - deltaDate
+  }
+
 }

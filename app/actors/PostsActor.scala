@@ -4,6 +4,8 @@ import actors.PostsActor.api._
 import actors.PostsActor._
 
 import akka.actor.{Props, Actor}
+import controllers.Utils
+import controllers.Utils.lastNDayFromNow
 import play.libs.Akka
 import facebookapi.FacebookApiService
 import facebookapi.domain.Post
@@ -25,37 +27,51 @@ class PostsActor(token: String) extends Actor {
 
   var allPosts: List[Post] = Nil
 
-  var posts: List[Post] = Nil
+  var postsSortedByCreation: List[Post] = Nil
 
   var postsSortedByRank: List[Post] = Nil
+  var postsSortedByRank_1Day: List[Post] = Nil
+  var postsSortedByRank_2Day: List[Post] = Nil
+  var postsSortedByRank_7Day: List[Post] = Nil
 
   var postsSortedByUpdateDate: List[Post] = Nil
 
   override def receive: Receive = {
 
-    case GetPostsByRank(d,t)         => sender ! postsSortedByRank.drop(d).take(t)
+    case GetPostsByRank(d,t, maxDay) => val selectedPosts = maxDay match {
+                                                                           case "day" => postsSortedByRank_1Day
+                                                                           case "2day" => postsSortedByRank_2Day
+                                                                           case "week" => postsSortedByRank_7Day
+                                                                           case _ => postsSortedByRank
+                                                                         }
+                                        sender ! selectedPosts.drop(d).take(t)
 
     case GetPostsByUpdateDate(d,t)   => sender ! postsSortedByUpdateDate.drop(d).take(t)
 
-    case GetPostsByCreationDate(d,t) => sender ! posts.drop(d).take(t)
+    case GetPostsByCreationDate(d,t) => sender ! postsSortedByCreation.drop(d).take(t)
 
-    case GetPost(id)                 => sender ! posts.find(_.getSid == id)
+    case GetPost(id)                 => sender ! postsSortedByCreation.find(_.getSid == id)
 
     case SyncFacebookPosts(days)     => Future {
-                                         val now = System.currentTimeMillis
-                                         val deltaDate = 1000 * 60 * 60 * 24 * InitialFacebookSyncNumberOfDays
-                                         val minDate = now - deltaDate
+                                          val defaultFilter = (p:Post) => p.getUpdatedTime.getTime > lastNDayFromNow(InitialFacebookSyncNumberOfDays)
+                                          val last1DayFilter = (p:Post) => p.getUpdatedTime.getTime > lastNDayFromNow(1)
+                                          val last2DayFilter = (p:Post) => p.getUpdatedTime.getTime > lastNDayFromNow(2)
+                                          val last1WeekFilter = (p:Post) => p.getUpdatedTime.getTime > lastNDayFromNow(7)
 
-                                         val facebookResult = importFacebookPosts(days)
 
-                                         //todo fixme inefficient
-                                         val notUpdatedPosts = allPosts.filterNot(p => facebookResult.exists(fb => fb.getSid == p.getSid))
+                                          val facebookResult = importFacebookPosts(days)
 
-                                         allPosts = (facebookResult ::: notUpdatedPosts) sortBy order.byUpdateDate
+                                          //todo fixme inefficient
+                                          val notUpdatedPosts = allPosts.filterNot(p => facebookResult.exists(fb => fb.getSid == p.getSid))
 
-                                         postsSortedByUpdateDate = allPosts takeWhile (p => p.getUpdatedTime.getTime > minDate)
-                                         posts = postsSortedByUpdateDate sortBy order.byCreationDate
-                                         postsSortedByRank = postsSortedByUpdateDate sortBy order.byRank
+                                          allPosts = (facebookResult ::: notUpdatedPosts) sortBy order.byUpdateDate
+
+                                          postsSortedByUpdateDate = allPosts takeWhile defaultFilter
+                                          postsSortedByCreation = postsSortedByUpdateDate sortBy order.byCreationDate
+                                          postsSortedByRank = postsSortedByUpdateDate sortBy order.byRank
+                                          postsSortedByRank_1Day = postsSortedByUpdateDate takeWhile last1DayFilter sortBy order.byRank
+                                          postsSortedByRank_2Day = postsSortedByUpdateDate takeWhile last2DayFilter sortBy order.byRank
+                                          postsSortedByRank_7Day = postsSortedByUpdateDate takeWhile last1WeekFilter sortBy order.byRank
                                        }
   }
 
@@ -76,6 +92,7 @@ class PostsActor(token: String) extends Actor {
     posts
   }
 
+
 }
 
 
@@ -94,7 +111,7 @@ object PostsActor {
 
     case class GetPost(id: String)
 
-    case class GetPostsByRank(drop: Int = 0, take: Int = 100)
+    case class GetPostsByRank(drop: Int = 0, take: Int = 100, cutOffDay: String = "default")
 
     case class GetPostsByUpdateDate(drop: Int = 0, take: Int = 100)
 

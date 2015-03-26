@@ -30,11 +30,13 @@ object Application extends Controller {
     val drop = NumberOfItemsForEachPage * (currentPage - 1)
 
     val sortByCommand = sort match {
-      case "rank" => GetPostsByRank(drop, take)
-      case "newest" => GetPostsByCreationDate(drop, take)
-      case "lastUpdated" => GetPostsByUpdateDate(drop, take)
-      case _ => GetPostsByRank(drop, take)
-    }
+                                    case "day"          => GetPostsByRank(drop, take,"day")
+                                    case "2day"         => GetPostsByRank(drop, take,"2day")
+                                    case "week"         => GetPostsByRank(drop, take,"week")
+                                    case "newest"       => GetPostsByCreationDate(drop, take)
+                                    case "lastUpdated"  => GetPostsByUpdateDate(drop, take)
+                                    case _              => GetPostsByRank(drop, take)
+                                   }
 
     (postsActor ? sortByCommand).mapTo[List[Post]] map { _posts =>
       val posts = _posts take NumberOfItemsForEachPage
