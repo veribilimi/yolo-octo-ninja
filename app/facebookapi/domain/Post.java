@@ -144,7 +144,7 @@ public class Post {
     
     public String getPrettyLink(){
         String host = link.getHost();
-        if (host.equals("facebook.com")) return "StartupIstanbul";
+        if (host.equals("facebook.com")) return "startupIstanbul";
         if (host.startsWith("www.")) host = host.substring(4);
         return host;
     }
