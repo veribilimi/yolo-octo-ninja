@@ -94,7 +94,15 @@ class PostsActor(token: String) extends Actor {
   def importFacebookPosts(days:Int) = {
     import scala.collection.JavaConversions._
     val posts: List[Post] = rankingService.getPosts("418686428146403",days).toList
-    posts
+
+
+    for {
+      post <- posts
+      comment <- post.getComments.toList
+      if comment.getFrom.getId == mugeFBId
+    } post.getComments.remove(comment)
+
+    posts filterNot (_.getFrom.getId == mugeFBId)
   }
 
 
@@ -104,7 +112,7 @@ class PostsActor(token: String) extends Actor {
 object PostsActor {
   //todo move this to application.conf
   val token = "343800439138314|EfAO_J7NepZsopex7pTx83hlFU0"
-
+  val mugeFBId = "10155291518270512"
 
   object order {
     val byRank: (Post) => Int = p => -(p.getComments.size + p.getLikes.size)
