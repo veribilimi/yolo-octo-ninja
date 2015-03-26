@@ -74,7 +74,6 @@ object Application extends Controller {
       }.getOrElse {
 
         NotFound
-        Redirect("/")
       }
     }
 
