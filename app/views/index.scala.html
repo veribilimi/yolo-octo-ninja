@@ -7,7 +7,7 @@
             @for((post,index) <- posts.zipWithIndex) {
                 <tr>
                     <td align="right" valign="top" class="title"><span class="rank"> @{firstRank+index + "."}</span></td>
-                    <td><center><a id="up_9245980" onclick="return vote(this)" href="https://news.ycombinator.com/vote?for=9245980&dir=up&auth=a03b13651e68cb49ad4d0b48d24162d9b6be113a&goto=news"><div class="votearrow" title="upvote"></div></a><span id="down_9245980"></span></center></td>
+                    <td><center><a id="up_9245980"  href="#"><div class="votearrow" title="upvote"></div></a><span id="down_9245980"></span></center></td>
                     <td class="title"><span class="deadmark"></span><a href="@routes.Application.post(post.getSid)">@post.getMessage.take(100)</a><span class="sitebit comhead"> (hsmr.cc)</span></td>
                 </tr>
                 <tr>
