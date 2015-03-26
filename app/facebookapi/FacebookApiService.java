@@ -60,7 +60,7 @@ public class FacebookApiService {
                 } catch (MalformedURLException ex) {
                     String[] ids = fbPost.getId().split("_");
                     try {
-                        post.setLink(new URL("https://www.facebook.com/" + ids[0] + "/posts/" + ids[1]));
+                        post.setLink(new URL("https://facebook.com/" + ids[0] + "/posts/" + ids[1]));
                     } catch (MalformedURLException ex1) {                        
                         post.setLink(null);
                     }
