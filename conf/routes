@@ -11,6 +11,9 @@ GET         /submit              controllers.Application.submit()
 GET         /login               controllers.Application.showLoginPage()
 POST        /login               controllers.Application.authenticate()
 
+GET         /auth                controllers.Application.showAuthPage()
+POST        /auth                controllers.Application.passKeyAuth()
+
 GET         /register            controllers.Application.showRegisterPage()
 GET         /logout              controllers.Application.logout()
 
