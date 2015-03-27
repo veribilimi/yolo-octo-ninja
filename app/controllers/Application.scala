@@ -30,14 +30,14 @@ object Application extends Controller {
     val drop = NumberOfItemsForEachPage * (currentPage - 1)
 
     val sortByCommand = sort match {
-      case "day" => GetPostsByRank(drop, take, "day")
-      case "2day" => GetPostsByRank(drop, take, "2day")
-      case "week" => GetPostsByRank(drop, take, "week")
-      case "newest" => GetPostsByCreationDate(drop, take)
-      case "lastUpdated" => GetPostsByUpdateDate(drop, take)
-      case "all" => GetAllPosts(drop, take)
-      case _ => GetPostsByRank(drop, take)
-    }
+                                    case "day"          => GetPostsByRank(drop, take,"day")
+                                    case "2day"         => GetPostsByRank(drop, take,"2day")
+                                    case "week"         => GetPostsByRank(drop, take,"week")
+                                    case "newest"       => GetPostsByCreationDate(drop, take)
+                                    case "lastUpdated"  => GetPostsByUpdateDate(drop, take)
+                                    case "all"          => GetAllPosts(drop, take)
+                                    case _              => GetPostsByRank(drop, take)
+                                   }
 
     (postsActor ? sortByCommand).mapTo[List[Post]] map { _posts =>
       val posts = _posts take NumberOfItemsForEachPage
@@ -81,7 +81,7 @@ object Application extends Controller {
 
 
   def logout() = Action {
-    (Redirect("/") withNewSession).discardingCookies(DiscardingCookie(name = "access_key"))
+    Redirect("/") withNewSession
   }
 
 
@@ -134,37 +134,6 @@ object Application extends Controller {
     Ok(views.html.submit())
   }
 
-
-  def showAuthPage() = Action { request =>
-    Ok(views.html.auth())
-  }
-
-  def passKeyAuth() = Action { request =>
-
-    val maybeBasicAuth: Option[String] = for {
-      formData <- request.body.asFormUrlEncoded
-
-      codeSeq <- formData.get("code")
-      code <- codeSeq.headOption
-
-    } yield code
-
-
-    maybeBasicAuth.map { code =>
-      if (code == "cipetpet") {
-        Redirect("/").withCookies(Cookie(name = "access_key", value = "cipetpet", maxAge = Some(2000000000)))
-
-      } else {
-
-        Forbidden("Wrong passkey!")
-      }
-    } getOrElse {
-      Forbidden("Missing passkey!")
-    }
-
-
-  }
-
   def robots = Action{
     Ok(
       """
@@ -172,7 +141,4 @@ object Application extends Controller {
         |Disallow: /
       """.stripMargin)
   }
-
-
-
 }
