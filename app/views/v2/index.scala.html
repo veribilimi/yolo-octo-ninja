@@ -1,0 +1,34 @@
+@(posts: List[facebookapi.domain.Post])(sort:String, firstRank:Int, currentPage:Int, nextPage:Int)
+@import controllers.Utils.renderName
+@mainWithNavigation("Yolo-octo-ninja") {
+
+    <table border="0" cellpadding="0" cellspacing="0">
+        <tbody>
+            @for((post,index) <- posts.zipWithIndex) {
+                <tr>
+                    <td align="right" valign="top" class="title"><span class="rank"> @{firstRank+index + "."}</span></td>
+                    <td><center><a id="up_9245980"  href="#"><div class="votearrow" title="upvote"></div></a><span id="down_9245980"></span></center></td>
+                    <td class="title"><span class="deadmark"></span><a href="@controllers.v2.routes.ApplicationV2.post(post.getSid)">@post.getMessage.take(100)</a><span class="sitebit comhead"> (@post.getPrettyLink)</span></td>
+                </tr>
+                <tr>
+                    <td colspan="2"></td>
+                    <td class="subtext">
+                        <span class="score" id="score_9245980">@(post.getComments.size + post.getLikes.size) points</span>
+                        by <a href="@controllers.v2.routes.ApplicationV2.user(renderName(post.getFrom.getName))"><font color="#3c963c">@renderName(post.getFrom.getName)</font></a>
+                        <a href="@controllers.v2.routes.ApplicationV2.post(post.getSid)">@(controllers.Utils.prettyTime.format(post.getCreatedTime))</a>  |
+                        <a href="@controllers.v2.routes.ApplicationV2.post(post.getSid)">@(post.getComments.size) comments @(post.getLikes.size) likes</a>
+                    </td>
+                </tr>
+                <tr style="height:5px"></tr>
+            }
+
+            <tr style="height:5px"></tr>
+            <tr style="height:10px"></tr>
+            <tr>
+                <td colspan="2"></td>
+                <td class="title"><a href="@controllers.v2.routes.ApplicationV2.posts(sort,nextPage)">More</a></td>
+            </tr>
+        </tbody>
+    </table>
+
+}

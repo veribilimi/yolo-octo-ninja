@@ -1,0 +1,89 @@
+@(post: facebookapi.domain.Post)
+@import controllers.Utils.parseComment
+@import controllers.Utils.renderName
+@mainWithNavigation("Post yolo-octo-ninja") {
+
+
+    <table border="0">
+        <tbody>
+            <tr>
+                <td><center>
+                    <a id="up_9247851" onclick="return vote(this)" href="javascript:void()"><div class="votearrow" title="upvote"></div></a>
+                    <span id="down_9247851"></span>
+                </center></td>
+                <td class="title">
+                    <span class="deadmark"></span>
+                    <a href="@post.getLink">@post.getMessage.take(100)</a>
+                    <span class="sitebit comhead"> (@post.getPrettyLink)</span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="1"></td>
+                <td class="subtext">
+                    <span class="score" id="score_9247851">@(post.getComments.size + post.getLikes.size) points</span>
+                    by <a href="@controllers.v2.routes.ApplicationV2.user(renderName(post.getFrom.getName))">@renderName(post.getFrom.getName)</a>
+                    <a href="javascript:void()">@controllers.Utils.prettyTime.format(post.getCreatedTime)</a>  |
+                    <a href="javascript:void()">@(post.getComments.size) comments</a>
+                </td>
+            </tr>
+            @*<tr style="height:10px"></tr>*@
+            <!--tr>
+                <td></td>
+                <td>
+                    <form method="post" action="comment">
+                        <input type="hidden" name="parent" value="9247851">
+                        <input type="hidden" name="goto" value="item?id=9247851">
+                        <input type="hidden" name="hmac" value="6ee75f7a44c66808a06ea099aa5be152d8babd41">
+                        <textarea name="text" rows="6" cols="60" style="" placeholder=""></textarea>
+                        <br><br>
+                        <input type="submit" value="add comment">
+                    </form>
+                </td>
+            </tr-->
+            <tr>
+                <td></td>
+                <td>@Html(parseComment(post.getMessage))</td>
+            </tr>
+    </tbody>
+    </table>
+    <br><br>
+    <table border="0">
+        <tbody>
+            @for(comment <- post.getComments.toList) {
+            <tr>
+                <td>
+                    <table border="0">
+                        <tbody>
+                            <tr>
+                                <td><img src="@routes.Assets.at("s.gif")" height="1" width="0"></td>
+                                <td valign="top">
+                                    <center>
+                                        <a id="up_9247963" onclick="return vote(this)" href="javascript:void()">
+                                            <div class="votearrow" title="upvote"></div>
+                                        </a>
+                                        <span id="down_9247963"></span>
+                                    </center>
+                                </td>
+                                <td class="default">
+                                    <div style="margin-top:2px; margin-bottom: -1px; ">
+                                        <span class="comhead">
+                                            <a href="@controllers.v2.routes.ApplicationV2.user(renderName(comment.getFrom.getName))">@renderName(comment.getFrom.getName)</a>
+                                            <a href="javascript:void()">@controllers.Utils.prettyTime.format(comment.getCreatedTime)</a>
+                                            <span class="deadmark"></span>
+                                        </span>
+                                    </div>
+
+                                    <span class="comment"><font color="#000000">@Html(parseComment(comment.getMessage))</font></span>
+                                    <p><font size="1"><u><a href="javascript:void()">reply</a></u></font></p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            }            
+        </tbody>
+    </table>
+    <br><br>
+    
+    }

@@ -1,0 +1,25 @@
+@(p1: String, p2: List[String])
+@main("selam testing") {
+    V2 test page
+    <h1>test 1</h1>
+
+    @routes.Application.showLoginPage() <br/>
+
+    @controllers.v2.routes.ApplicationV2.showLoginPage()
+
+    <hr/>
+
+
+    <span>p1 budur :</span> @p1 <br/>
+
+    <h1>Dongu</h1>
+
+    @for(xxxx <- p2) {
+
+        <b>@xxxx</b> <hr/>
+    }
+
+    <h1>dongu bitti</h1>
+
+
+}

@@ -3,25 +3,49 @@
 # ~~~~
 
 # Home page
-GET         /                    controllers.Application.index(page: Int ?= 1)
-GET         /posts               controllers.Application.posts(sort:String?="rank", page: Int ?= 1)
-GET         /post/:id            controllers.Application.post(id:String)
-GET         /submit              controllers.Application.submit()
+GET         /                     controllers.Application.index(page: Int ?= 1)
+GET         /posts                controllers.Application.posts(sort:String?="rank", page: Int ?= 1)
+GET         /post/:id             controllers.Application.post(id:String)
+GET         /submit               controllers.Application.submit()
 
-GET         /login               controllers.Application.showLoginPage()
-POST        /login               controllers.Application.authenticate()
+GET         /login                controllers.Application.showLoginPage()
+POST        /login                controllers.Application.authenticate()
 
-GET         /register            controllers.Application.showRegisterPage()
-GET         /logout              controllers.Application.logout()
+GET         /register             controllers.Application.showRegisterPage()
+GET         /logout               controllers.Application.logout()
 
-GET         /user/:id            controllers.Application.user(id:String)
+GET         /user/:id             controllers.Application.user(id:String)
 
-GET         /test                controllers.Application.test()
+GET         /test                 controllers.Application.test()
 
-GET         /robots.txt          controllers.Application.robots()
+GET         /robots.txt           controllers.Application.robots()
 
 
 
 
 # Map static resources from the /public folder to the /assets URL path
-GET         /assets/*file        controllers.Assets.at(path="/public", file)
+GET         /assets/*file         controllers.Assets.at(path="/public", file)
+
+
+
+
+
+
+# v2 BURAYA
+GET         /v2                   controllers.v2.ApplicationV2.index(page: Int ?= 1)
+GET         /v2/                  controllers.v2.ApplicationV2.index(page: Int ?= 1)
+GET         /v2/posts             controllers.v2.ApplicationV2.posts(sort:String?="rank", page: Int ?= 1)
+GET         /v2/post/:id          controllers.v2.ApplicationV2.post(id:String)
+GET         /v2/submit            controllers.v2.ApplicationV2.submit()
+
+GET         /v2/login             controllers.v2.ApplicationV2.showLoginPage()
+POST        /v2/login             controllers.v2.ApplicationV2.authenticate()
+
+GET         /v2/register          controllers.v2.ApplicationV2.showRegisterPage()
+GET         /v2/logout            controllers.v2.ApplicationV2.logout()
+
+GET         /v2/user/:id          controllers.v2.ApplicationV2.user(id:String)
+
+GET         /v2/test              controllers.v2.ApplicationV2.test()
+
+GET         /v2/robots.txt        controllers.v2.ApplicationV2.robots()
