@@ -49,3 +49,4 @@ GET         /v2/user/:id          controllers.v2.ApplicationV2.user(id:String)
 GET         /v2/test              controllers.v2.ApplicationV2.test()
 
 GET         /v2/robots.txt        controllers.v2.ApplicationV2.robots()
+GET         /v2/test2             controllers.v2.ApplicationV2.test2()
