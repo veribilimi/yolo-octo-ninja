@@ -18,7 +18,7 @@ GET         /user/:id             controllers.Application.user(id:String)
 
 GET         /test                 controllers.Application.test()
 
-GET         /robots.txt           controllers.Application.robots()
+#GET         /robots.txt           controllers.Application.robots()
 
 
 
