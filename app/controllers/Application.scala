@@ -141,4 +141,11 @@ object Application extends Controller {
         |Disallow: /
       """.stripMargin)
   }
+
+  def googleverification = Action{
+    Ok(
+      """
+        |google-site-verification: google78f17c1e67392940.html
+      """.stripMargin)
+  }
 }
