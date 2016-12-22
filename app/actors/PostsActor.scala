@@ -93,7 +93,7 @@ class PostsActor(token: String) extends Actor {
 
   def importFacebookPosts(days:Int) = {
     import scala.collection.JavaConversions._
-    val posts: List[Post] = rankingService.getPosts("418686428146403",days).toList
+    val posts: List[Post] = rankingService.getPosts("465842350233183",days).toList
 
 
     for {
