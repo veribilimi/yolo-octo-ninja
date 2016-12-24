@@ -9,6 +9,33 @@
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("news.css")">
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
 
+        <!-- use .min on prod, Çağatay-->
+        <link
+          rel="stylesheet"
+          href="@routes.Assets.at("semantic/semantic.css")">
+
+        <!-- add these to semantic and rebuild -->
+        <style>
+          body{
+            padding-top:62px;
+          }
+          .ui.items > .item > .controls{
+            text-align:center;
+            margin-right:1rem;
+          }
+
+          .ui.items > .item > .controls + [class*="top aligned"].content {
+            align-self: flex-start;
+          }
+
+          .ui.items > .item > .controls + [class*="middle aligned"].content {
+            align-self: center;
+          }
+
+          .ui.items > .item > .controls + [class*="bottom aligned"].content {
+            align-self: flex-end;
+          }
+        </style>
     </head>
     <body>
         <script>
@@ -30,7 +57,8 @@
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
         <script src="@routes.Assets.at("lib/jquery/jquery.min.js")" type="text/javascript"></script>
         <script src="@routes.Assets.at("javascripts/main.js")" type="text/javascript"></script>
+        <!-- use .min on prod, Çağatay-->
+        <script src="@routes.Assets.at("semantic/semantic.js")" type="text/javascript"></script>
 
-        
     </body>
 </html>
