@@ -127,6 +127,10 @@ object ApplicationV2 extends Controller {
 
     Ok(views.html.v2.test("parametre1", myList))
   }
+  def test2() = Action {
+    val myList = List(1,2,3,4,5)
+    Ok(views.html.v2.test2(myList))
+  }
 
   def submit() = Action {
     Ok(views.html.v2.submit())

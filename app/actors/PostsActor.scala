@@ -17,8 +17,8 @@ import scala.concurrent.ExecutionContext.Implicits.global
  * Created by sumnulu on 22/03/15.
  */
 class PostsActor(token: String) extends Actor {
-  val InitialFacebookSyncNumberOfDays = 14
-  val DefaultFacebookSyncNumberOfDays = 1
+  val InitialFacebookSyncNumberOfDays = 365
+  val DefaultFacebookSyncNumberOfDays = 90
 
   val FacebookSyncEvery = 1800 seconds
 
@@ -93,7 +93,7 @@ class PostsActor(token: String) extends Actor {
 
   def importFacebookPosts(days:Int) = {
     import scala.collection.JavaConversions._
-    val posts: List[Post] = rankingService.getPosts("418686428146403",days).toList
+    val posts: List[Post] = rankingService.getPosts("465842350233183",days).toList
 
 
     for {

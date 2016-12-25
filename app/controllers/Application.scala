@@ -137,8 +137,14 @@ object Application extends Controller {
   def robots = Action{
     Ok(
       """
-        |User-agent: *
-        |Disallow: /
+      | User-agent: *
+      """.stripMargin)
+  }
+
+  def googleverification = Action{
+    Ok(
+      """
+        |google-site-verification: google78f17c1e67392940.html
       """.stripMargin)
   }
 }
