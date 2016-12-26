@@ -3,7 +3,61 @@
 @import controllers.Utils.renderName
 @mainWithNavigation("Post yolo-octo-ninja") {
 
+<div class='ui segment post container'>
+  <a class="ui orange ribbon label">
+    <i class='up arrow icon'></i>
+    @(post.getComments.size + post.getLikes.size)
+  </a>
+  <i class="heart icon"></i>
+  @(post.getLikes.size)
 
+  <i class="comments icon"></i>
+  @(post.getComments.size)
+
+  <i class="user icon"></i>
+  <a href="@controllers.v2.routes.ApplicationV2.user(renderName(post.getFrom.getName))">
+    @renderName(post.getFrom.getName)
+  </a>
+  <a class="date" href="#">
+    @controllers.Utils.prettyTime.format(post.getCreatedTime)
+  </a>
+  <p>
+  </p>
+  <p>
+    @Html(parseComment(post.getMessage))
+  </p>
+  <div class='ui divider'></div>
+  <div class='ui divided relaxed items'>
+
+    @for(comment <- post.getComments.toList){
+
+      <div class='item'>
+        <div class='controls'>
+          <div>
+            <button class="ui basic circular icon button">
+              <i class='up arrow icon'></i>
+            </button>
+          </div>
+          <div>
+            @(post.getComments.size + post.getLikes.size)
+          </div>
+        </div>
+        <div class='middle aligned content'>
+          <a href="@controllers.v2.routes.ApplicationV2.user(renderName(comment.getFrom.getName))">@renderName(comment.getFrom.getName)</a>
+          <div class="meta">
+
+            <a href="javascript:void()">@controllers.Utils.prettyTime.format(comment.getCreatedTime)</a>
+          </div>
+          <div class="description">
+            @Html(parseComment(comment.getMessage))
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+
+</div>
+    <!--
     <table border="0">
         <tbody>
             <tr>
@@ -39,7 +93,7 @@
                         <input type="submit" value="add comment">
                     </form>
                 </td>
-            </tr-->
+            </tr>
             <tr>
                 <td></td>
                 <td>@Html(parseComment(post.getMessage))</td>
@@ -81,9 +135,10 @@
                     </table>
                 </td>
             </tr>
-            }            
+            }
         </tbody>
     </table>
     <br><br>
-    
+
     }
+-->
