@@ -18,13 +18,13 @@
         </div>
       </div>
       <div class='middle aligned content'>
-        <a class="header" href="@routes.Application.post(post.getSid)">
+        <a class="header" href="@controllers.v2.routes.ApplicationV2.post(post.getSid)">
           @post.getMessage.take(100)
         </a>
         <div class="meta">
-          <a href="@routes.Application.user(renderName(post.getFrom.getName))"><font color="#3c963c">@renderName(post.getFrom.getName)</font></a>
-          <a href="@routes.Application.post(post.getSid)">@(controllers.Utils.prettyTime.format(post.getCreatedTime))</a>  |
-          <a href="@routes.Application.post(post.getSid)">@(post.getComments.size) comments @(post.getLikes.size) likes</a>
+          <a href="@controllers.v2.routes.ApplicationV2.user(renderName(post.getFrom.getName))"><font color="#3c963c">@renderName(post.getFrom.getName)</font></a>
+          <a href="@controllers.v2.routes.ApplicationV2.post(post.getSid)">@(controllers.Utils.prettyTime.format(post.getCreatedTime))</a>  |
+          <a href="@controllers.v2.routes.ApplicationV2.post(post.getSid)">@(post.getComments.size) comments @(post.getLikes.size) likes</a>
         </div>
         <div class="description">
 

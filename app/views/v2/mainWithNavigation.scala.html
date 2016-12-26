@@ -2,8 +2,8 @@
 @main(title) {
 
 <div class="ui top fixed menu">
-  <a class='item' href="@routes.Application.index()"> Heykır News </a>
-  <a class='item' href="@routes.Application.posts("newest")"> Newest </a>
+  <a class='item' href="@controllers.v2.routes.ApplicationV2.index()"> Heykır News </a>
+  <a class='item' href="@controllers.v2.routes.ApplicationV2.posts("newest")"> Newest </a>
 </div>
 
 <div>
@@ -11,10 +11,10 @@
 </div>
 
 <div class='footer'>
-  <a href="@routes.Application.posts("lastUpdated")">updated posts</a> |
-  <a href="@routes.Application.posts("newest")">newest posts</a> |
-  <a href="@routes.Application.posts("week")">week</a> |
-  <a href="@routes.Application.posts("all")">all</a> |
+  <a href="@controllers.v2.routes.ApplicationV2.posts("lastUpdated")">updated posts</a> |
+  <a href="@controllers.v2.routes.ApplicationV2.posts("newest")">newest posts</a> |
+  <a href="@controllers.v2.routes.ApplicationV2.posts("week")">week</a> |
+  <a href="@controllers.v2.routes.ApplicationV2.posts("all")">all</a> |
   <a href="/assets/tos.html">Terms of Service</a>
 </div>
 }
