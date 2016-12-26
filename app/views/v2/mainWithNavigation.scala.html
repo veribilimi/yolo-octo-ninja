@@ -1,70 +1,20 @@
 @(title: String)(content: Html)
 @main(title) {
 
+<div class="ui top fixed menu">
+  <a class='item' href="@controllers.v2.routes.ApplicationV2.index()"> Heykır News </a>
+  <a class='item' href="@controllers.v2.routes.ApplicationV2.posts("newest")"> Newest </a>
+</div>
 
-        <center>
-            <table id="hnmain" op="news" border="0" cellpadding="0" cellspacing="0" width="85%" bgcolor="#f6f6ef">
-                <tbody>
-                    <tr>
-                        <td bgcolor="#ff6600">
-                            <table border="0" cellpadding="0" cellspacing="0" width="100%" style="padding:2px">
-                                <tbody>
-                                    <tr>
-                                        <td style="width:18px;padding-right:4px"><a href="@controllers.v2.routes.ApplicationV2.index()"><img src="@routes.Assets.at("y18.gif")" width="18" height="18" style="border:1px #ffffff solid;"></a></td>
-                                        <td style="line-height:12pt; height:10px;"><span class="pagetop">
-                                            <b><a href="@controllers.v2.routes.ApplicationV2.index()">Yolo-Octo-Ninja</a></b>
-                                            <img src="@routes.Assets.at("s.gif")" height="1" width="10">
-                                            <a href="@controllers.v2.routes.ApplicationV2.posts("day")">day</a> |
-                                            <a href="@controllers.v2.routes.ApplicationV2.posts("2day")">last48h</a> |
-                                            <a href="@controllers.v2.routes.ApplicationV2.posts("week")">week</a> |
-                                            @*<a href="/newcomments">comments</a> |*@
-                                            @*<a href="/show">show</a> |*@
-                                            @*<a href="/ask">ask</a> |*@
-                                            <a href="@controllers.v2.routes.ApplicationV2.submit()">submit</a>
-                                        </span></td>
+<div>
+  @content
+</div>
 
-                                        <td style="text-align:right;padding-right:4px;">
-                                            <span class="pagetop">
-                                                @*<a href="@controllers.v2.routes.ApplicationV2.user("9999")">user</a> &nbsp;(1453)&nbsp;|&nbsp;*@
-                                                <a href="@controllers.v2.routes.ApplicationV2.showLoginPage()">login</a>&nbsp;|&nbsp;
-                                                <a href="@controllers.v2.routes.ApplicationV2.showRegisterPage()">register</a> &nbsp;|&nbsp;
-                                                @*<a href="@controllers.v2.routes.ApplicationV2.logout()">logout</a>*@
-                                            </span>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr style="height:10px"></tr>
-                    <tr>
-                        <td>
-
-                            @content
-
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <img src="@routes.Assets.at("s.gif")" height="10" width="0">
-                            <table width="100%" cellspacing="0" cellpadding="1"><tbody><tr><td bgcolor="#ff6600"></td></tr></tbody></table><br>
-                            <center><br>
-                                <span class="yclinks">
-                                    <a href="@controllers.v2.routes.ApplicationV2.posts("lastUpdated")">updated posts</a> |
-                                    <a href="@controllers.v2.routes.ApplicationV2.posts("newest")">newest posts</a> |
-                                    <a href="@controllers.v2.routes.ApplicationV2.posts("week")">week</a> |
-                                    <a href="@controllers.v2.routes.ApplicationV2.posts("all")">all</a> |
-                                    <a href="/">Yolo Octo Ninja</a>
-                                </span>
-                                <br><br>
-                                <form method="get" action="">Search: <input type="text" name="q" value="" size="17" ></form>
-                            </center>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </center>
-
-
+<div class='footer'>
+  <a href="@controllers.v2.routes.ApplicationV2.posts("lastUpdated")">updated posts</a> |
+  <a href="@controllers.v2.routes.ApplicationV2.posts("newest")">newest posts</a> |
+  <a href="@controllers.v2.routes.ApplicationV2.posts("week")">week</a> |
+  <a href="@controllers.v2.routes.ApplicationV2.posts("all")">all</a> |
+  <a href="/assets/tos.html">Terms of Service</a>
+</div>
 }

@@ -2,21 +2,54 @@
 @import controllers.Utils.renderName
 @mainWithNavigation("Yolo-octo-ninja") {
 
-    <table border="0" cellpadding="0" cellspacing="0">
+<div class='ui divided relaxed items container'>
+
+  @for((post,index) <- posts.zipWithIndex) {
+
+    <div class='item'>
+      <div class='controls'>
+        <div>
+          <button class="ui basic circular icon button">
+            <i class='up arrow icon'></i>
+          </button>
+        </div>
+        <div>
+          @(post.getComments.size + post.getLikes.size)
+        </div>
+      </div>
+      <div class='middle aligned content'>
+        <a class="header" href="@controllers.v2.routes.ApplicationV2.post(post.getSid)">
+          @post.getMessage.take(100)
+        </a>
+        <div class="meta">
+          <a href="@controllers.v2.routes.ApplicationV2.user(renderName(post.getFrom.getName))"><font color="#3c963c">@renderName(post.getFrom.getName)</font></a>
+          <a href="@controllers.v2.routes.ApplicationV2.post(post.getSid)">@(controllers.Utils.prettyTime.format(post.getCreatedTime))</a>  |
+          <a href="@controllers.v2.routes.ApplicationV2.post(post.getSid)">@(post.getComments.size) comments @(post.getLikes.size) likes</a>
+        </div>
+        <div class="description">
+
+
+          </a>
+        </div>
+      </div>
+    </div>
+  }
+</div>
+    <!--<table border="0" cellpadding="0" cellspacing="0">
         <tbody>
             @for((post,index) <- posts.zipWithIndex) {
                 <tr>
                     <td align="right" valign="top" class="title"><span class="rank"> @{firstRank+index + "."}</span></td>
                     <td><center><a id="up_9245980"  href="#"><div class="votearrow" title="upvote"></div></a><span id="down_9245980"></span></center></td>
-                    <td class="title"><span class="deadmark"></span><a href="@controllers.v2.routes.ApplicationV2.post(post.getSid)">@post.getMessage.take(100)</a><span class="sitebit comhead"> (@post.getPrettyLink)</span></td>
+                    <td class="title"><span class="deadmark"></span><a href="@routes.Application.post(post.getSid)">@post.getMessage.take(100)</a><span class="sitebit comhead"> (@post.getPrettyLink)</span></td>
                 </tr>
                 <tr>
                     <td colspan="2"></td>
                     <td class="subtext">
                         <span class="score" id="score_9245980">@(post.getComments.size + post.getLikes.size) points</span>
-                        by <a href="@controllers.v2.routes.ApplicationV2.user(renderName(post.getFrom.getName))"><font color="#3c963c">@renderName(post.getFrom.getName)</font></a>
-                        <a href="@controllers.v2.routes.ApplicationV2.post(post.getSid)">@(controllers.Utils.prettyTime.format(post.getCreatedTime))</a>  |
-                        <a href="@controllers.v2.routes.ApplicationV2.post(post.getSid)">@(post.getComments.size) comments @(post.getLikes.size) likes</a>
+                        by <a href="@routes.Application.user(renderName(post.getFrom.getName))"><font color="#3c963c">@renderName(post.getFrom.getName)</font></a>
+                        <a href="@routes.Application.post(post.getSid)">@(controllers.Utils.prettyTime.format(post.getCreatedTime))</a>  |
+                        <a href="@routes.Application.post(post.getSid)">@(post.getComments.size) comments @(post.getLikes.size) likes</a>
                     </td>
                 </tr>
                 <tr style="height:5px"></tr>
@@ -26,9 +59,9 @@
             <tr style="height:10px"></tr>
             <tr>
                 <td colspan="2"></td>
-                <td class="title"><a href="@controllers.v2.routes.ApplicationV2.posts(sort,nextPage)">More</a></td>
+                <td class="title"><a href="@routes.Application.posts(sort,nextPage)">More</a></td>
             </tr>
         </tbody>
-    </table>
+    </table>-->
 
 }
